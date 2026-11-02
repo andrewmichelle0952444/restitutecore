@@ -49,7 +49,7 @@ const aiGuidedRecoveryPreparationPrompt = ai.definePrompt({
   name: 'aiGuidedRecoveryPreparationPrompt',
   input: {schema: AIGuidedRecoveryPreparationInputSchema},
   output: {schema: AIGuidedRecoveryPreparationOutputSchema},
-  prompt: `You are an enterprise-grade digital forensic scanner for Lazoronix. 
+  prompt: `You are an enterprise-grade digital forensic scanner for Restiturecore. 
 
 Your task is to conduct an "Automated Case Intake Assessment" based on the user's data.
 

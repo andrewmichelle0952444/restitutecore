@@ -2,11 +2,53 @@ import type {Metadata} from 'next';
 import './globals.css';
 import {Toaster} from '@/components/ui/toaster';
 import {MouseSpotlight} from '@/components/ui/mouse-spotlight';
-import Script from 'next/script';
 
 export const metadata: Metadata = {
-  title: 'Lazoronix | Institutional Forensic Intelligence & Digital Asset Investigation',
-  description: 'Specialized forensic investigation for victims of financial trading fraud, institutional investment schemes, and digital asset access challenges. Leading with evidence-based intelligence.',
+  metadataBase: new URL('https://restiturecore.com'),
+  title: {
+    default: 'Scam Recovery Services | Restiturecore',
+    template: '%s | Restiturecore',
+  },
+  description: 'Explore scam recovery services for investment fraud, romance scams, bank transfers and cryptocurrency fraud. Request an assessment of your circumstances and available options.',
+  keywords: [
+    'scam recovery services',
+    'financial fraud investigation',
+    'crypto scam recovery',
+    'investment scam recovery',
+    'bank transfer scam recovery',
+    'APP fraud recovery',
+    'romance scam recovery',
+    'pig butchering crypto scam',
+    'crypto wallet recovery',
+    'digital asset tracing'
+  ],
+  alternates: {
+    canonical: 'https://restiturecore.com',
+  },
+  openGraph: {
+    title: 'Scam Recovery Services | Restiturecore',
+    description: 'Explore scam recovery services for investment fraud, romance scams, bank transfers and cryptocurrency fraud. Request an assessment of your circumstances and available options.',
+    url: 'https://restiturecore.com',
+    siteName: 'Restiturecore',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Scam Recovery Services | Restiturecore',
+    description: 'Explore scam recovery services for investment fraud, romance scams, bank transfers and cryptocurrency fraud.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -59,20 +101,6 @@ export default function RootLayout({
         <MouseSpotlight />
         {children}
         <Toaster />
-        
-        {/* Tawk.to Stable Initialization */}
-        <Script id="tawk-init" strategy="afterInteractive">
-          {`
-            window.Tawk_API = window.Tawk_API || {};
-            window.Tawk_LoadStart = new Date();
-          `}
-        </Script>
-        <Script 
-          id="tawk-embed"
-          src="https://embed.tawk.to/6a3186cd16fcef1d436f9c5b/1jr8nd581" 
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
       </body>
     </html>
   );

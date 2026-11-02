@@ -10,32 +10,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shield, Lock, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { useBrandAsset } from '@/lib/brand-assets';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const { url: logoUrl, handleImageError } = useBrandAsset('logo.png');
   const router = useRouter();
   const { toast } = useToast();
-
-  useEffect(() => {
-    fetchLogo();
-  }, []);
-
-  const fetchLogo = async () => {
-    try {
-      const { data } = supabase.storage
-        .from('assets')
-        .getPublicUrl('logo.png');
-      
-      if (data?.publicUrl) {
-        setLogoUrl(`${data.publicUrl}?t=${Date.now()}`);
-      }
-    } catch (error) {
-      setLogoUrl(null);
-    }
-  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,7 +57,7 @@ export default function AdminLoginPage() {
                 src={logoUrl} 
                 alt="Logo" 
                 className="w-full h-full object-contain"
-                onError={() => setLogoUrl(null)}
+                onError={handleImageError}
               />
             ) : (
               <Shield className="w-10 h-10 text-primary" />
@@ -93,7 +76,7 @@ export default function AdminLoginPage() {
               <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Admin Email</Label>
               <Input
                 type="email"
-                placeholder="investigator@lazoronix.com"
+                placeholder="investigator@restiturecore.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-background/50 border-white/10 rounded-none"

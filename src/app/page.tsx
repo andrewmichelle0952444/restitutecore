@@ -1,22 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Navbar } from '@/components/layout/Navbar';
 import { Hero } from '@/components/sections/Hero';
-import { ProblemSection } from '@/components/sections/ProblemSection';
-import { SignsSection } from '@/components/sections/SignsSection';
-import { WhyChooseUs } from '@/components/sections/WhyChooseUs';
-import { ProcessSection } from '@/components/sections/ProcessSection';
+import { SuccessStories } from '@/components/sections/SuccessStories';
+import { AIGuidedTool } from '@/components/sections/AIGuidedTool';
 import { FAQSection } from '@/components/sections/FAQSection';
 import { Footer } from '@/components/layout/Footer';
-import { AIGuidedTool } from '@/components/sections/AIGuidedTool';
-import { SuccessStories } from '@/components/sections/SuccessStories';
-import { TeamSection } from '@/components/sections/TeamSection';
-import { GlobalIntelligence } from '@/components/sections/GlobalIntelligence';
-import { EvidencePreservation } from '@/components/sections/EvidencePreservation';
-import { IntelligenceReports } from '@/components/sections/IntelligenceReports';
 import { Button } from '@/components/ui/button';
 import { SectionReveal } from '@/components/ui/section-reveal';
 import { 
@@ -32,348 +23,381 @@ import {
   ArrowRight, 
   ShieldCheck, 
   TrendingUp, 
-  BarChart, 
-  Heart, 
+  Database, 
   Briefcase, 
+  Lock, 
+  FileText, 
+  CheckCircle2, 
+  Shield, 
+  ChevronRight, 
+  Search, 
+  Network, 
+  Mail,
+  Scale,
+  Building,
+  KeyRound,
+  AlertTriangle,
+  Landmark,
   Wallet,
-  FileText,
-  MessageSquare,
+  Heart,
   Globe,
-  CreditCard,
-  CheckCircle2,
-  Shield,
-  Lock,
-  ChevronRight,
-  Search,
-  Activity,
-  Network,
-  Fingerprint,
-  Mail
+  ExternalLink,
+  BookOpen
 } from 'lucide-react';
 
-const SERVICE_DETAILS = [
-  { 
-    id: "forex",
-    title: "Trading Fraud Recovery", 
-    subtitle: "Broker fraud & platform manipulation help.",
-    icon: TrendingUp, 
-    markers: [
-      "Withdrawal restrictions",
-      "Fake trading profits",
-      "Broker disappearance",
-      "Account manipulation"
-    ],
-    desc: "We help identify fraudulent brokers and track funds sent to suspicious accounts.",
-    detailedDesc: "Trading fraud often involves unregulated brokers showing fake profits. When you try to withdraw, they demand 'taxes' or 'fees'—this is a sign of fraud.",
-    forensicSteps: [
-      "Broker Identification: Locating where the broker operates.",
-      "Fund Flow Audit: Tracing payments to find receiving banks.",
-      "Evidence Extraction: Proving manipulation of account data."
-    ]
+import { SERVICE_CATEGORIES, ServiceItem } from '@/lib/services-data';
+
+// Educational Resources
+const EDUCATIONAL_RESOURCES = [
+  {
+    title: "What to Do After a Bank Transfer Scam (APP Fraud)",
+    category: "Action Guide",
+    summary: "Immediate steps to take with your bank: recall requests, freezing beneficiary accounts, and documenting fraud timelines.",
+    icon: Landmark,
+    actionText: "Read Bank Transfer Scam Action Guide",
+    url: "/resources#bank-transfer-scams"
   },
-  { 
-    id: "investment",
-    title: "Investment Scam Recovery", 
-    subtitle: "Help with fake investment platforms & schemes.",
-    icon: BarChart, 
-    markers: [
-      "Ponzi schemes",
-      "Fake token sales",
-      "High-yield fraud",
-      "Unauthorized transfers"
-    ],
-    desc: "Technical analysis to find where your assets were moved.",
-    detailedDesc: "Modern scams use fake 'High-Yield' sites. Scammers hide funds on the blockchain, but we can track these assets to find where they end up.",
-    forensicSteps: [
-      "Wallet History: Tracking the sequence of transfers.",
-      "Contract Audit: Checking code used to lock or drain funds.",
-      "Recipient Tracking: Mapping addresses to find recovery paths."
-    ]
+  {
+    title: "How to Correctly Document a Crypto Scam for Investigation",
+    category: "Evidence Guide",
+    summary: "Why transaction hashes (TXIDs), receiving wallet addresses, and unedited chat logs are essential for blockchain tracing.",
+    icon: Database,
+    actionText: "Read Crypto Evidence Documentation Protocol",
+    url: "/resources#documenting-crypto-scams"
   },
-  { 
-    id: "romance",
-    title: "Romance Scam Recovery", 
-    subtitle: "Support for victims of relationship fraud.",
-    icon: Heart, 
-    markers: [
-      "Crypto transfers",
-      "Wire transfer deception",
-      "Gift card fraud",
-      "Identity deception"
-    ],
-    desc: "Investigative support for victims targeted through online relationships.",
-    detailedDesc: "These scams involve long-term emotional manipulation to persuade victims to 'invest' in fake sites. We focus on tracking the specific crypto wallets used.",
-    forensicSteps: [
-      "Source Audit: Analyzing emails and chats to find origins.",
-      "Identity Verification: Using tools to unmask the scammer.",
-      "Evidence Packaging: Preparing reports for recovery steps."
-    ]
-  },
-  { 
-    id: "wallet",
-    title: "Lost Funds Recovery", 
-    subtitle: "Recovery of lost keys & locked digital assets.",
-    icon: Wallet, 
-    markers: [
-      "Hardware wallet issues",
-      "Lost seed phrases",
-      "Locked exchange accounts",
-      "Corrupted drives"
-    ],
-    desc: "Specialized tools to regain access to hardware and software wallets.",
-    detailedDesc: "Sometimes funds aren't stolen, just inaccessible. We specialize in recovering access when you have lost your password or seed phrase.",
-    forensicSteps: [
-      "Hardware Recovery: Physical recovery for Ledger or Trezor.",
-      "Phrase Reconstruction: Rebuilding seed phrases from partial data.",
-      "Credential Recovery: Bypassing encryption on wallet files."
-    ]
-  },
-  { 
-    id: "job",
-    title: "Employment Scam Recovery", 
-    subtitle: "Help with fake job offers & recruitment fraud.",
-    icon: Briefcase, 
-    markers: [
-      "Upfront training fees",
-      "Remote equipment scams",
-      "Fake onboarding sites",
-      "Identity theft attempts"
-    ],
-    desc: "Support for victims of job scams, focusing on fee tracing.",
-    detailedDesc: "Job scams target professionals with fake roles. Victims are asked to pay for 'equipment' or provide sensitive bank details.",
-    forensicSteps: [
-      "Portal Mapping: Identifying servers used by fake sites.",
-      "Financial Tracing: Tracking accounts used to take fees.",
-      "Identity Protection: Securing any stolen personal data."
-    ]
-  },
-  { 
-    id: "tracing",
-    title: "Blockchain Asset Recovery", 
-    subtitle: "Professional crypto asset tracing & resolution.",
-    icon: ShieldCheck, 
-    markers: [
-      "Transaction path history",
-      "Liquidity mapping",
-      "Exchange intercession",
-      "Jurisdictional analysis"
-    ],
-    desc: "Crypto intelligence for high-value asset losses and complex tracing.",
-    detailedDesc: "For high-value losses, we use analytics to track assets through mixers and across different blockchains to find the final exit point.",
-    forensicSteps: [
-      "Cross-Chain Tracing: Tracking assets moving between cryptos.",
-      "Exchange Coordination: Working with security teams to freeze funds.",
-      "Detailed Reporting: Providing reports for resolution."
-    ]
-  },
+  {
+    title: "Warning Signs of a Secondary Recovery Scam",
+    category: "Protection Guide",
+    summary: "How to identify fraudulent 'hack-back' promises, advance recovery taxes, and impersonators targeting fraud victims.",
+    icon: AlertTriangle,
+    actionText: "Read Secondary Recovery Scam Warnings",
+    url: "/resources#secondary-recovery-scams"
+  }
 ];
 
-function InstitutionalDecryptor({ children, label = "Dossier" }: { children: React.ReactNode, label?: string }) {
-  const [state, setState] = useState<'decrypting' | 'open'>('decrypting');
-
-  useEffect(() => {
-    const timer = setTimeout(() => setState('open'), 400);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (state === 'decrypting') {
-    return (
-      <div className="h-[400px] flex flex-col items-center justify-center space-y-6">
-        <div className="flex items-center gap-3">
-           <div className="w-2 h-2 bg-primary animate-breathing" />
-           <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">{label}</span>
-        </div>
-        <div className="text-2xl font-headline font-bold uppercase tracking-tighter animate-pulse text-white">
-           Opening Files...
-        </div>
-        <div className="w-64 h-[1px] bg-white/5 relative overflow-hidden">
-           <div className="absolute top-0 h-full w-24 bg-primary animate-stream-pulse" />
-        </div>
-        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground">Initializing Secure Access</p>
-      </div>
-    );
-  }
-
-  return <div className="animate-in fade-in duration-500">{children}</div>;
-}
-
 export default function Home() {
+  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string>('all');
+
+  const filteredCategories = activeCategory === 'all' 
+    ? SERVICE_CATEGORIES 
+    : SERVICE_CATEGORIES.filter(c => c.id === activeCategory);
+
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-background text-foreground">
       <Navbar />
+
+      {/* 01: Hero — Scam Recovery & Financial Fraud Assistance */}
       <Hero />
-      
-      <section id="about" className="py-20 bg-background relative overflow-hidden">
-        <div className="container mx-auto px-6 relative z-10">
-          <SectionReveal className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-5xl font-headline font-bold mb-8 leading-tight">
-              Investigation First. Recovery Second.
-            </h2>
-            <div className="space-y-6 text-xl text-muted-foreground leading-relaxed">
-              <p className="text-foreground font-medium italic">
-                Lazoronix is a legally registered forensic entity in the State of Delaware, specializing in digital asset tracing and fraud investigation.
-              </p>
-              <p>
-                Our role is to help you understand the facts of your case, preserve evidence, and determine if recovery is possible through institutional investigative rigor. We operate under the authority of verified digital forensic protocols.
-              </p>
-              <div className="pt-8 flex flex-col items-center gap-4">
-                <div className="w-12 h-px bg-primary/30" />
-                <p className="text-sm font-bold uppercase tracking-[0.3em] text-primary flex items-center gap-3">
-                  <Shield className="w-4 h-4" />
-                  Delaware Division of Corporations Registered
-                </p>
-              </div>
+
+      {/* 02: Find Your Scam Recovery Service (3 Clear Service Families) */}
+      <section id="services" className="py-24 md:py-32 bg-background relative overflow-hidden border-t border-white/[0.06]">
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <SectionReveal className="max-w-3xl mx-auto text-center mb-12 md:mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold mb-4 tracking-[0.25em] uppercase">
+              Three Service Families
             </div>
-          </SectionReveal>
-        </div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.03)_0%,transparent_70%)] pointer-events-none" />
-      </section>
-
-      <div className="py-12 bg-white/5 border-y border-white/5">
-        <div className="container mx-auto px-6 text-center">
-          <p className="text-muted-foreground text-[10px] font-black uppercase tracking-[0.4em] mb-8">Specialized Recovery Services</p>
-          <div className="flex flex-wrap justify-center items-center gap-x-16 gap-y-8 opacity-40 grayscale contrast-125">
-             <span className="text-2xl font-bold tracking-[0.3em] font-headline">RECOVERY</span>
-             <span className="text-2xl font-bold tracking-[0.3em] font-headline">INTELLIGENCE</span>
-             <span className="text-2xl font-bold tracking-[0.3em] font-headline">ANALYSIS</span>
-             <span className="text-2xl font-bold tracking-[0.3em] font-headline">TRACING</span>
-             <span className="text-2xl font-bold tracking-[0.3em] font-headline">RESOLUTION</span>
-          </div>
-        </div>
-      </div>
-
-      <ProblemSection />
-      
-      <SignsSection />
-      
-      <EvidencePreservation />
-
-      <section id="services" className="py-24 bg-muted/5">
-        <div className="container mx-auto px-6">
-          <SectionReveal className="text-center mb-20">
-            <h2 className="text-[10px] font-black text-primary uppercase tracking-[0.5em] mb-4">Recovery Solutions</h2>
-            <h3 className="text-4xl md:text-5xl font-headline font-bold mb-6 uppercase tracking-tighter">Our Services</h3>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto font-medium">
-              We provide targeted recovery support for many types of fraud.
+            <h2 className="text-3xl md:text-5xl font-headline font-semibold mb-6 tracking-tight text-[#F5F0E7]">
+              Find Your Scam Recovery Service
+            </h2>
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed font-normal">
+              Our 11 scam investigation and wallet recovery services are organized across three clear families. Select a category below or explore each individual dedicated service page.
             </p>
           </SectionReveal>
-          
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-10 max-w-7xl mx-auto">
-            {SERVICE_DETAILS.map((service, idx) => (
-              <SectionReveal key={idx} delay={idx * 100} duration={500} className="h-full">
-                <div className="p-10 md:p-12 rounded-none bg-card border border-white/5 hover:border-primary/50 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 flex flex-col h-full group relative overflow-hidden shadow-2xl shadow-black/20">
-                  <div className="absolute top-0 right-0 p-12 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity">
-                    <service.icon className="w-40 h-40" />
+
+          {/* Three Families Filter Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 max-w-4xl mx-auto mb-16">
+            <button
+              onClick={() => setActiveCategory('all')}
+              className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all ${
+                activeCategory === 'all'
+                  ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+                  : 'bg-card/80 text-muted-foreground hover:text-white border border-white/10'
+              }`}
+            >
+              All Categories (12)
+            </button>
+            {SERVICE_CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all flex items-center gap-2 ${
+                  activeCategory === cat.id
+                    ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+                    : 'bg-card/80 text-muted-foreground hover:text-white border border-white/10'
+                }`}
+              >
+                <span>{cat.badge}:</span>
+                <span>{cat.title.replace(/^Category [ABC] — /, '')}</span>
+                <span className="text-[10px] opacity-70">({cat.services.length})</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Render Categories */}
+          <div className="space-y-20 max-w-6xl mx-auto">
+            {filteredCategories.map((category) => (
+              <div key={category.id} className="space-y-8">
+                {/* Family Header */}
+                <div className="border-b border-white/[0.08] pb-5 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                  <div>
+                    <span className="text-[10px] font-bold text-primary uppercase tracking-[0.25em] block mb-1">
+                      {category.badge}
+                    </span>
+                    <h3 className="text-2xl md:text-3xl font-headline font-semibold text-[#F5F0E7]">
+                      {category.title.replace(/^Category [ABC] — /, '')}
+                    </h3>
+                    <p className="text-xs md:text-sm text-muted-foreground mt-1 max-w-3xl leading-relaxed">
+                      {category.description}
+                    </p>
                   </div>
-                  
-                  <div className="flex items-center gap-6 mb-8">
-                    <div className="w-16 h-16 rounded-none bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-700 relative overflow-hidden">
-                      <div className="absolute inset-[-4px] border border-dashed border-primary/0 group-hover:border-primary/30 group-hover:rotate-180 transition-all duration-1000 ease-in-out" />
-                      <service.icon className="w-8 h-8 text-primary relative z-10" />
+                  <Link 
+                    href={`/services#${category.id}`} 
+                    className="text-xs font-bold text-primary hover:underline uppercase tracking-wider shrink-0 flex items-center gap-1"
+                  >
+                    Category Directory →
+                  </Link>
+                </div>
+
+                {/* Category C Distinct Definition Banner */}
+                {category.id === 'wallet-access' && (
+                  <div className="p-6 rounded-sm bg-card border border-primary/25 space-y-3 shadow-lg">
+                    <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest">
+                      <KeyRound className="w-4 h-4" />
+                      Distinct Problem Definition: Lost Access vs. Stolen Cryptocurrency
                     </div>
-                    <div>
-                      <h4 className="text-2xl font-headline font-bold uppercase tracking-tight">{service.title}</h4>
-                      <p className="text-primary text-[10px] font-black uppercase tracking-widest">{service.subtitle}</p>
-                    </div>
+                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                      Wallet access recovery is fundamentally different from cryptocurrency stolen in a scam. In wallet recovery, the assets are not stolen—access is lost due to forgotten passwords, mistranscribed recovery phrases, or corrupted hardware storage.
+                    </p>
+                    <p className="text-[11px] text-primary/80 font-semibold uppercase tracking-wider">
+                      Important Boundary: Cryptographic protections (such as AES-256) cannot be bypassed or brute-forced without partial password hints or valid seed phrase constraints.
+                    </p>
                   </div>
-                  
-                  <div className="space-y-4 mb-10 flex-grow">
-                     <p className="text-muted-foreground text-sm uppercase leading-relaxed tracking-wide font-medium">{service.desc}</p>
-                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 pt-6 border-t border-white/5">
-                       {service.markers.map((marker, mIdx) => (
-                         <div key={mIdx} className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-foreground/50">
-                           <ChevronRight className="w-3.5 h-3.5 text-primary" />
-                           {marker}
-                         </div>
-                       ))}
-                     </div>
-                  </div>
+                )}
 
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="outline" size="lg" className="h-14 px-8 rounded-none border-white/10 hover:bg-primary hover:text-black transition-all w-fit font-bold uppercase tracking-widest">
-                        Service Details <ArrowRight className="ml-2 w-5 h-5" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto glass-card border-white/10 p-0">
-                      <DialogTitle className="sr-only">{service.title}</DialogTitle>
-                      <DialogDescription className="sr-only">Briefing and recovery path for {service.title}.</DialogDescription>
-                      <InstitutionalDecryptor label="Service Info">
-                        <div className="p-8 md:p-12 space-y-10">
-                          <DialogHeader className="flex flex-col md:flex-row gap-8 items-start text-left">
-                            <div className="w-20 h-20 rounded-none bg-primary/10 flex items-center justify-center shrink-0">
-                              <service.icon className="w-10 h-10 text-primary" />
+                {/* Service Cards Grid for This Family */}
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {category.services.map((srv, idx) => (
+                    <SectionReveal key={srv.slug} delay={idx * 60} className="h-full">
+                      <div className="p-7 md:p-8 rounded-sm bg-card border border-white/[0.07] hover:border-primary/40 transition-all duration-300 flex flex-col h-full group relative shadow-lg shadow-black/20">
+                        <div className="flex items-start justify-between mb-5">
+                          <span className="text-[9px] uppercase font-bold tracking-[0.2em] text-[#C8B68B] px-2.5 py-1 rounded bg-primary/10 border border-primary/20">
+                            {category.badge}
+                          </span>
+                          <Link 
+                            href={`/services/${srv.slug}`}
+                            className="text-muted-foreground hover:text-primary transition-colors"
+                            title="Open dedicated page"
+                          >
+                            <ExternalLink className="w-4 h-4 opacity-60 group-hover:opacity-100" />
+                          </Link>
+                        </div>
+
+                        <h4 className="text-lg md:text-xl font-headline font-semibold mb-2.5 text-[#F5F0E7] group-hover:text-primary transition-colors">
+                          {srv.title}
+                        </h4>
+                        <p className="text-xs text-muted-foreground leading-relaxed mb-5 flex-grow">
+                          {srv.subtitle}
+                        </p>
+
+                        <div className="pt-4 border-t border-white/[0.06] space-y-2 mb-6">
+                          <p className="text-[9px] uppercase font-bold tracking-widest text-[#F5F0E7]/60">Operational Indicators</p>
+                          {srv.keyProblems.slice(0, 2).map((m, mIdx) => (
+                            <div key={mIdx} className="flex items-center gap-2 text-xs text-[#F5F0E7]/80">
+                              <ChevronRight className="w-3 h-3 text-primary shrink-0" />
+                              <span className="truncate">{m}</span>
                             </div>
-                            <div className="space-y-4">
-                              <div className="text-3xl md:text-5xl font-headline font-bold uppercase tracking-tighter">{service.title}</div>
-                              <div className="text-primary text-[10px] font-black uppercase tracking-[0.4em] opacity-100">
-                                {service.subtitle}
-                              </div>
-                            </div>
-                          </DialogHeader>
+                          ))}
+                        </div>
 
-                          <div className="grid lg:grid-cols-5 gap-12">
-                            <div className="lg:col-span-3 space-y-8">
-                              <div className="space-y-4">
-                                <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground flex items-center gap-2">
-                                  <Search className="w-4 h-4 text-primary" /> Analysis
-                                </h4>
-                                <p className="text-lg text-foreground/90 leading-relaxed font-medium italic border-l-2 border-primary pl-6">
-                                  "{service.detailedDesc}"
-                                </p>
-                              </div>
+                        <div className="space-y-2.5">
+                          <Link href={`/services/${srv.slug}`} className="block">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              className="w-full h-10 border-white/10 bg-white/[0.02] hover:bg-white/[0.06] hover:border-primary/40 text-xs font-semibold uppercase tracking-wider rounded-sm text-[#F5F0E7] transition-all"
+                            >
+                              Dedicated Service Page <ArrowRight className="ml-2 w-3.5 h-3.5" />
+                            </Button>
+                          </Link>
 
-                              <div className="space-y-4">
-                                <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground flex items-center gap-2">
-                                  <Network className="w-4 h-4 text-primary" /> Recovery Method
-                                </h4>
-                                <div className="space-y-4">
-                                  {service.forensicSteps.map((step, sIdx) => (
-                                    <div key={sIdx} className="p-5 bg-white/5 border border-white/5 flex items-start gap-4 hover:border-primary/30 transition-colors">
-                                      <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-[10px] font-black text-primary">0{sIdx + 1}</div>
-                                      <p className="text-sm font-bold text-foreground/80 leading-relaxed uppercase tracking-wide">{step}</p>
-                                    </div>
-                                  ))}
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <button 
+                                onClick={() => setSelectedService(srv)}
+                                className="w-full text-center text-[10px] font-bold uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors py-1"
+                              >
+                                Quick Assessment Overview
+                              </button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-2xl bg-[#16171A] border-white/10 text-foreground p-7 md:p-9 rounded-sm">
+                              <DialogHeader className="text-left space-y-2 mb-5">
+                                <span className="text-[10px] uppercase font-bold tracking-[0.25em] text-primary">{category.title}</span>
+                                <DialogTitle className="text-2xl font-headline font-semibold text-[#F5F0E7]">{srv.title}</DialogTitle>
+                                <DialogDescription className="text-sm text-muted-foreground">{srv.subtitle}</DialogDescription>
+                              </DialogHeader>
+
+                              <div className="space-y-5 text-sm leading-relaxed">
+                                <div className="p-4 rounded-sm bg-[#121316] border border-white/[0.06] text-[#F5F0E7]/90 leading-relaxed font-normal text-xs md:text-sm">
+                                  {srv.investigationApproach}
                                 </div>
-                              </div>
-                            </div>
 
-                            <div className="lg:col-span-2 space-y-8">
-                               <div className="p-8 bg-primary/5 border border-primary/20 space-y-6">
-                                 <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-primary flex items-center gap-2">
-                                   <Fingerprint className="w-4 h-4" /> Requirements
-                                 </h4>
-                                 <div className="space-y-4">
-                                   {service.markers.map((marker, mIdx) => (
-                                     <div key={mIdx} className="flex items-center gap-3 text-xs font-bold text-foreground/60 uppercase tracking-widest">
-                                       <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                                       {marker}
-                                     </div>
-                                   ))}
-                                 </div>
-                               </div>
+                                <div>
+                                  <h4 className="text-xs uppercase font-bold tracking-widest text-[#F5F0E7] mb-2.5 flex items-center gap-2">
+                                    <ShieldCheck className="w-4 h-4 text-primary" /> Key Deliverables
+                                  </h4>
+                                  <div className="space-y-2">
+                                    {srv.deliverables.map((deliv, dIdx) => (
+                                      <div key={dIdx} className="flex items-center gap-2.5 text-xs text-muted-foreground p-2.5 bg-white/[0.02] border border-white/[0.04] rounded-sm">
+                                        <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
+                                        <span>{deliv}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
 
-                               <div className="space-y-4">
-                                  <Link href="#forensic-intake" className="block w-full">
+                                <div className="pt-3 flex flex-col sm:flex-row gap-3">
+                                  <Link href="#case-assessment" className="flex-1">
                                     <DialogClose asChild>
-                                      <Button className="w-full h-16 bg-primary text-black font-black uppercase tracking-[0.2em] shadow-2xl shadow-primary/20 hover:scale-[1.02] transition-transform premium-cta rounded-none">
-                                        Contact Specialist
+                                      <Button className="w-full h-11 bg-primary text-primary-foreground hover:bg-primary/90 font-bold uppercase tracking-wider text-xs rounded-sm">
+                                        Request a Case Assessment
                                       </Button>
                                     </DialogClose>
                                   </Link>
-                                  <div className="text-center space-y-2">
-                                    <p className="text-[9px] font-black uppercase tracking-[0.4em] text-muted-foreground flex items-center justify-center gap-2">
-                                      <Lock className="w-3 h-3" /> Secure Connection Active
-                                    </p>
-                                    <a href="mailto:investigator@lazoronix.com" className="block text-[8px] font-bold text-primary hover:underline uppercase tracking-widest">investigator@lazoronix.com</a>
-                                  </div>
-                               </div>
-                            </div>
-                          </div>
+                                  <Link href={`/services/${srv.slug}`} className="sm:w-auto">
+                                    <Button variant="outline" className="w-full h-11 border-white/10 hover:border-primary/40 text-xs font-semibold uppercase tracking-wider rounded-sm text-[#F5F0E7]">
+                                      Full Page Guide
+                                    </Button>
+                                  </Link>
+                                </div>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
                         </div>
-                      </InstitutionalDecryptor>
-                    </DialogContent>
-                  </Dialog>
+                      </div>
+                    </SectionReveal>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 03: How Our Scam Assessment Process Works (3 Concise Stages) */}
+      <section id="process" className="py-24 md:py-32 bg-card/20 relative overflow-hidden border-t border-white/[0.06]">
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <SectionReveal className="max-w-3xl mx-auto text-center mb-16 md:mb-20">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold mb-4 tracking-[0.25em] uppercase">
+              The Assessment Journey
+            </div>
+            <h2 className="text-3xl md:text-5xl font-headline font-semibold mb-6 tracking-tight text-[#F5F0E7]">
+              How Our Scam Assessment Works
+            </h2>
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed font-normal">
+              A transparent, pressure-free evaluation of your circumstances. You will receive an honest appraisal of whether recovery is technically viable.
+            </p>
+          </SectionReveal>
+
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto mb-14">
+            {[
+              {
+                step: "01",
+                title: "Tell Us What Happened",
+                desc: "Submit your case details confidentially through our intake portal. Share dates, amounts, platform URLs, transaction IDs (TXIDs), and communications with the perpetrators.",
+                reassurance: "Protected under strict AES-256 confidentiality protocols."
+              },
+              {
+                step: "02",
+                title: "Review Available Information",
+                desc: "Our digital analysts examine the submitted ledger hashes, banking rails, and infrastructure records to determine if funds can be traced to regulated institutions.",
+                reassurance: "Objective review without upfront recovery promises."
+              },
+              {
+                step: "03",
+                title: "Understand Your Options",
+                desc: "Receive a clear breakdown of potential next steps: formal exchange freeze requests, bank dispute documentation, law enforcement packages, or closing the matter honestly if unviable.",
+                reassurance: "No obligation. Any further work is agreed on fixed scope."
+              }
+            ].map((st, idx) => (
+              <SectionReveal key={idx} delay={idx * 100} className="h-full">
+                <div className="p-8 rounded-sm bg-card border border-white/[0.07] h-full flex flex-col relative group hover:border-primary/40 transition-colors">
+                  <div className="flex items-center justify-between mb-5">
+                    <span className="text-3xl font-headline font-bold text-primary">{st.step}</span>
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">Stage {idx + 1}</span>
+                  </div>
+                  <h3 className="text-xl font-headline font-semibold text-[#F5F0E7] mb-3">{st.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-grow">{st.desc}</p>
+                  <p className="text-[11px] text-primary/90 font-medium pt-4 border-t border-white/[0.06]">{st.reassurance}</p>
+                </div>
+              </SectionReveal>
+            ))}
+          </div>
+
+          <SectionReveal className="text-center">
+            <Link href="#case-assessment">
+              <Button size="lg" className="h-13 px-8 text-xs font-bold uppercase tracking-wider bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm shadow-md transition-all">
+                Request a Case Assessment <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+          </SectionReveal>
+        </div>
+      </section>
+
+      {/* 04: Our Approach to Fraud Investigation */}
+      <section id="approach" className="py-24 md:py-32 bg-background relative overflow-hidden border-t border-white/[0.06]">
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <SectionReveal className="max-w-3xl mx-auto text-center mb-16 md:mb-20">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold mb-4 tracking-[0.25em] uppercase">
+              Investigative Rigour
+            </div>
+            <h2 className="text-3xl md:text-5xl font-headline font-semibold mb-6 tracking-tight text-[#F5F0E7]">
+              Our Approach to Fraud Investigation
+            </h2>
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed font-normal">
+              We focus on defensible, verifiable facts. Here is how our analysts approach every case to produce evidence that holds up under scrutiny.
+            </p>
+          </SectionReveal>
+
+          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6 md:gap-8">
+            {[
+              {
+                number: "01",
+                title: "Evidence Collection & Chain-of-Custody",
+                desc: "We securely gather and timestamp transaction IDs, bank wire confirmations, server headers, and communications to ISO/IEC 27037 digital evidence standards.",
+                icon: FileText
+              },
+              {
+                number: "02",
+                title: "Transaction & Blockchain Review",
+                desc: "On-chain traversal unmasks multi-hop mixers and cross-chain bridges, tracing funds to centralized exchange deposit addresses where accounts can be frozen.",
+                icon: Search
+              },
+              {
+                number: "03",
+                title: "Source & Counterparty Verification",
+                desc: "We perform Open-Source Intelligence (OSINT) on scam domains, identifying server locations, merchant acquiring rails, and responsible corporate shell entities.",
+                icon: Network
+              },
+              {
+                number: "04",
+                title: "Actionable Documentation & Liaison",
+                desc: "We synthesize raw digital evidence into a court-admissible forensic dossier designed for banks, exchange compliance teams, legal counsel, or law enforcement.",
+                icon: ShieldCheck
+              }
+            ].map((step, idx) => (
+              <SectionReveal key={idx} delay={idx * 100}>
+                <div className="p-8 rounded-sm bg-card border border-white/[0.07] hover:border-primary/30 transition-colors flex items-start gap-5">
+                  <div className="w-11 h-11 rounded-sm bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                    <step.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="text-xs font-bold text-primary uppercase tracking-wider">Step {step.number}</span>
+                    </div>
+                    <h3 className="text-lg font-headline font-semibold text-[#F5F0E7] mb-2">{step.title}</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
+                  </div>
                 </div>
               </SectionReveal>
             ))}
@@ -381,182 +405,146 @@ export default function Home() {
         </div>
       </section>
 
-      <WhyChooseUs />
-      
-      <SuccessStories />
-
-      <TeamSection />
-
-      <section className="py-24 bg-primary/5">
-        <div className="container mx-auto px-6">
-          <SectionReveal className="max-w-5xl mx-auto glass-card rounded-none overflow-hidden">
-            <div className="grid md:grid-cols-5 items-stretch">
-              <div className="md:col-span-3 p-8 md:p-16 border-r border-white/5">
-                <h2 className="text-4xl font-headline font-bold mb-6 uppercase tracking-tighter">Recovery Review</h2>
-                <p className="text-xl text-foreground/80 mb-8 leading-relaxed font-medium">
-                  Every case is unique. Our specialists review your data to see if recovery is possible.
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
-                  {[
-                    { icon: FileText, text: "Transaction Data" },
-                    { icon: Wallet, text: "Wallet History" },
-                    { icon: MessageSquare, text: "Chat Logs" },
-                    { icon: Globe, text: "Site Infrastructure" },
-                    { icon: CreditCard, text: "Evidence Quality" },
-                    { icon: TrendingUp, text: "Recovery Check" }
-                  ].map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                        <item.icon className="w-4 h-4 text-primary" />
-                      </div>
-                      <span className="font-bold text-[10px] uppercase tracking-widest text-foreground/80">{item.text}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="space-y-4">
-                  <Link href="#forensic-intake">
-                    <Button size="lg" className="h-16 px-10 text-lg font-black uppercase tracking-[0.2em] bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 group rounded-none">
-                      Contact a Recovery Specialist
-                      <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                  <div className="flex flex-col gap-1 items-start pl-4">
-                    <p className="text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground italic">Or email us directly</p>
-                    <a href="mailto:investigator@lazoronix.com" className="text-[10px] font-bold text-primary hover:underline uppercase tracking-widest">investigator@lazoronix.com</a>
-                  </div>
-                </div>
-              </div>
-              <div className="md:col-span-2 p-8 md:p-16 bg-primary text-primary-foreground flex flex-col justify-center">
-                <div className="space-y-8">
-                  <div className="flex items-start gap-4">
-                    <CheckCircle2 className="w-6 h-6 shrink-0 mt-1" />
-                    <div>
-                      <h4 className="text-xl font-headline font-bold mb-2 uppercase tracking-tight">Professional</h4>
-                      <p className="opacity-80 text-sm font-medium">All cases reviewed using objective methods.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <CheckCircle2 className="w-6 h-6 shrink-0 mt-1" />
-                    <div>
-                      <h4 className="text-xl font-headline font-bold mb-2 uppercase tracking-tight">Data Led</h4>
-                      <p className="opacity-80 text-sm font-medium">aiming for facts and evidence-based results.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <CheckCircle2 className="w-6 h-6 shrink-0 mt-1" />
-                    <div>
-                      <h4 className="text-xl font-headline font-bold mb-2 uppercase tracking-tight">Private</h4>
-                      <p className="opacity-80 text-sm font-medium">Case details are stored securely.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {/* 05: Why Restiturecore & What to Expect */}
+      <section id="why-us" className="py-24 md:py-32 bg-card/20 relative overflow-hidden border-t border-white/[0.06]">
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <SectionReveal className="max-w-3xl mx-auto text-center mb-16 md:mb-20">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold mb-4 tracking-[0.25em] uppercase">
+              Credibility & Standards
             </div>
-          </SectionReveal>
-        </div>
-      </section>
-      
-      <GlobalIntelligence />
-
-      <AIGuidedTool />
-      
-      <IntelligenceReports />
-
-      <ProcessSection />
-      
-      <section className="py-24 bg-primary text-primary-foreground overflow-hidden relative">
-         <div className="container mx-auto px-6 relative z-10 text-center">
-            <SectionReveal>
-              <h2 className="text-4xl md:text-5xl font-headline font-bold mb-8 uppercase tracking-tighter">Our Commitment</h2>
-              <p className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90 mb-12 font-medium">
-                We bridge the gap between digital fraud and professional recovery rigor.<br/>
-                <span className="font-bold underline decoration-accent decoration-4 underline-offset-8">Every case is reviewed with precision.</span>
-              </p>
-            </SectionReveal>
-         </div>
-         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)] pointer-events-none" />
-      </section>
-
-      <FAQSection />
-
-      <section className="py-24 border-t border-white/5 bg-background relative overflow-hidden">
-        <div className="container mx-auto px-6">
-          <SectionReveal className="max-w-6xl mx-auto text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-headline font-bold mb-6 uppercase tracking-tighter">Speak With Our Investigation Team</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-medium">
-              Whether you're reporting a suspected scam, dealing with a digital asset access issue, or need help understanding your recovery options, you can contact our team directly.
+            <h2 className="text-3xl md:text-5xl font-headline font-semibold mb-6 tracking-tight text-[#F5F0E7]">
+              Why Restiturecore & What to Expect
+            </h2>
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed font-normal">
+              In an industry plagued by false promises and secondary recovery scammers, we stand apart through transparency, restraint, and verifiable investigation standards.
             </p>
           </SectionReveal>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <SectionReveal delay={100} className="h-full">
-              <div className="glass-card p-10 md:p-12 rounded-none hover:border-primary/50 transition-all duration-300 h-full flex flex-col">
-                <div className="flex items-center gap-4 mb-8">
-                  <span className="text-2xl font-headline font-bold text-primary opacity-50">01</span>
-                  <h3 className="text-2xl font-headline font-bold uppercase tracking-tight">Submit Your Case</h3>
+          {/* 4 Trust Pillars */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-16">
+            {[
+              {
+                icon: ShieldCheck,
+                title: "Zero False Promises",
+                subtitle: "Honest Feasibility",
+                desc: "We never guarantee recovery. We objectively evaluate evidence first, ensuring you don't spend money chasing untraceable losses."
+              },
+              {
+                icon: AlertTriangle,
+                title: "Anti-Secondary Scam Protection",
+                subtitle: "Guaranteed Fraud Defense",
+                desc: "We educate clients on identifying secondary recovery fraud, 'hack-back' impersonators, and bogus fee-in-advance demands."
+              },
+              {
+                icon: Building,
+                title: "Delaware Registered",
+                subtitle: "Corporate Transparency",
+                desc: "A legally registered corporate entity in the State of Delaware, providing accountable, compliant investigative support."
+              },
+              {
+                icon: Scale,
+                title: "Clear Legal Distinction",
+                subtitle: "Evidence Focused",
+                desc: "We provide technical forensics and evidence packages, working alongside your retained legal counsel or direct banking channels."
+              }
+            ].map((pillar, pIdx) => (
+              <SectionReveal key={pIdx} delay={pIdx * 80} className="h-full">
+                <div className="p-7 rounded-sm bg-card border border-white/[0.07] h-full flex flex-col hover:border-primary/30 transition-colors">
+                  <div className="w-10 h-10 rounded-sm bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-5">
+                    <pillar.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="text-base font-headline font-semibold text-[#F5F0E7] mb-1">{pillar.title}</h3>
+                  <p className="text-[10px] uppercase font-bold tracking-wider text-primary mb-3">{pillar.subtitle}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed font-normal">{pillar.desc}</p>
                 </div>
-                <p className="text-muted-foreground mb-10 flex-grow uppercase text-xs tracking-widest font-bold leading-loose">
-                  Provide structured information through our secure case form. This allows our team to initialize Phase 01: Intake & Preservation immediately.
-                </p>
-                <Link href="#forensic-intake" className="w-full">
-                  <Button size="lg" className="w-full h-16 bg-primary text-black font-black uppercase tracking-widest premium-cta rounded-none">
-                    Start Case Assessment <ArrowRight className="ml-2 w-5 h-5" />
-                  </Button>
-                </Link>
-              </div>
-            </SectionReveal>
-
-            <SectionReveal delay={200} className="h-full">
-              <div className="glass-card p-10 md:p-12 rounded-none border-primary/20 bg-primary/5 hover:border-primary/50 transition-all duration-300 h-full flex flex-col">
-                <div className="flex items-center gap-4 mb-8">
-                  <span className="text-2xl font-headline font-bold text-primary opacity-50">02</span>
-                  <h3 className="text-2xl font-headline font-bold uppercase tracking-tight">Email Our Team</h3>
-                </div>
-                <p className="text-muted-foreground mb-10 flex-grow uppercase text-xs tracking-widest font-bold leading-loose">
-                  Send a confidential enquiry directly to our investigation team. Ideal for private disclosure or complex multi-jurisdictional briefings.
-                </p>
-                <div className="space-y-4 w-full">
-                  <a href="mailto:investigator@lazoronix.com" className="block w-full">
-                    <Button size="lg" variant="outline" className="w-full h-16 border-white/10 bg-white/5 hover:bg-white/10 font-black uppercase tracking-widest rounded-none">
-                      Email a Specialist <Mail className="ml-2 w-5 h-5" />
-                    </Button>
-                  </a>
-                  <p className="text-[10px] text-center font-bold text-primary uppercase tracking-widest">investigator@lazoronix.com</p>
-                </div>
-              </div>
-            </SectionReveal>
+              </SectionReveal>
+            ))}
           </div>
 
-          <div className="mt-20 flex flex-col items-center gap-6">
-            <div className="w-12 h-px bg-primary/30" />
-            <div className="flex items-center gap-8 text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground">
-              <span className="flex items-center gap-2">
-                <Lock className="w-3.5 h-3.5 text-primary" /> Two ways to begin
-              </span>
-              <span className="w-px h-3 bg-white/10" />
-              <span className="flex items-center gap-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-primary" /> Secure Data Protocols
-              </span>
+          {/* Anonymised Precedents & Verified Case Records */}
+          <div className="max-w-6xl mx-auto">
+            <SuccessStories />
+          </div>
+        </div>
+      </section>
+
+      {/* 06: Scam Recovery Resources & Educational Guides */}
+      <section id="resources" className="py-24 md:py-32 bg-background relative overflow-hidden border-t border-white/[0.06]">
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <SectionReveal className="max-w-3xl mx-auto text-center mb-16 md:mb-20">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold mb-4 tracking-[0.25em] uppercase">
+              Consumer Support & Knowledge
             </div>
+            <h2 className="text-3xl md:text-5xl font-headline font-semibold mb-6 tracking-tight text-[#F5F0E7]">
+              Scam Recovery Resources & Guidance
+            </h2>
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed font-normal">
+              Practical guides and essential fraud education to help you take immediate, protective action and avoid secondary pitfalls.
+            </p>
+          </SectionReveal>
+
+          {/* 3 Useful Action Guides */}
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
+            {EDUCATIONAL_RESOURCES.map((res, rIdx) => (
+              <SectionReveal key={rIdx} delay={rIdx * 100} className="h-full">
+                <div className="p-7 rounded-sm bg-card border border-white/[0.07] h-full flex flex-col group hover:border-primary/40 transition-colors">
+                  <div className="flex items-center gap-2 text-[10px] uppercase font-bold text-primary tracking-widest mb-4">
+                    <BookOpen className="w-3.5 h-3.5 text-primary" />
+                    <span>{res.category}</span>
+                  </div>
+                  <h3 className="text-lg font-headline font-semibold text-[#F5F0E7] mb-3 group-hover:text-primary transition-colors">
+                    {res.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed mb-6 flex-grow">
+                    {res.summary}
+                  </p>
+                  <Link href={res.url} className="inline-flex items-center text-xs font-semibold text-primary hover:underline uppercase tracking-wider">
+                    {res.actionText} →
+                  </Link>
+                </div>
+              </SectionReveal>
+            ))}
           </div>
+
+          {/* FAQ Accordion */}
+          <div className="max-w-4xl mx-auto">
+            <FAQSection />
+          </div>
+        </div>
+      </section>
+
+      {/* 07: Confidential Enquiry & Final Conversion Destination */}
+      <section className="py-24 md:py-32 bg-card/25 relative overflow-hidden border-t border-white/[0.06]">
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <SectionReveal className="max-w-3xl mx-auto text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold mb-4 tracking-[0.25em] uppercase">
+              Start Your Assessment
+            </div>
+            <h2 className="text-3xl md:text-5xl font-headline font-semibold mb-4 tracking-tight text-[#F5F0E7]">
+              Request a Case Assessment
+            </h2>
+            <p className="text-muted-foreground text-base max-w-2xl mx-auto leading-relaxed">
+              Submit your incident parameters confidentially. Our fraud analysts review the digital trail and outline your realistic recovery options without pressure or guaranteed recovery claims.
+            </p>
+          </SectionReveal>
+
+          {/* Interactive Case Intake */}
+          <AIGuidedTool />
+
+          {/* Direct Encrypted Transmission Card */}
+          <SectionReveal className="max-w-3xl mx-auto mt-12 p-8 md:p-10 rounded-sm bg-[#121316] border border-white/[0.08] text-center">
+            <h3 className="text-xl font-headline font-semibold text-[#F5F0E7] mb-2">Prefer to email our team directly?</h3>
+            <p className="text-xs md:text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed mb-6">
+              If you have already prepared an evidence folder or wish to share sensitive communications privately, transmit your details directly to our senior analysts.
+            </p>
+            <a href="mailto:investigator@restiturecore.com" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary border border-primary/30 px-6 py-3 rounded-sm hover:bg-primary hover:text-primary-foreground transition-all">
+              <Mail className="w-4 h-4" /> investigator@restiturecore.com
+            </a>
+          </SectionReveal>
         </div>
       </section>
 
       <Footer />
-      
-      <div className="fixed bottom-24 left-6 z-50">
-        <div className="mt-8 flex items-center justify-center gap-6 text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">
-          <span className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-breathing" />
-            Confidential Review
-          </span>
-          <span className="w-px h-3 bg-white/10" />
-          <span className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-breathing" />
-            No Upfront Fees
-          </span>
-        </div>
-      </div>
     </main>
   );
 }

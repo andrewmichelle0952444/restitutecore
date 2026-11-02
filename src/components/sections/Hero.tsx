@@ -1,33 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ShieldCheck, ArrowRight, Mail } from 'lucide-react';
 import { SectionReveal } from '@/components/ui/section-reveal';
 import { supabase } from '@/lib/supabase';
+import { useBrandAsset } from '@/lib/brand-assets';
 
 export function Hero() {
-  const [bgUrl, setBgUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchHeroBg();
-  }, []);
-
-  const fetchHeroBg = async () => {
-    try {
-      const { data } = supabase.storage
-        .from('assets')
-        .getPublicUrl('hero-bg.png');
-      
-      if (data?.publicUrl) {
-        setBgUrl(`${data.publicUrl}?t=${Date.now()}`);
-      }
-    } catch (error) {
-      setBgUrl(null);
-    }
-  };
+  const { url: bgUrl, handleImageError } = useBrandAsset('hero-bg.png');
 
   return (
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden hero-gradient border-b border-white/5 min-h-[80vh] flex items-center">
@@ -40,7 +22,7 @@ export function Hero() {
             fill 
             className="object-cover"
             priority
-            onError={() => setBgUrl(null)}
+            onError={handleImageError}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/20 to-background" />
         </div>
@@ -61,49 +43,57 @@ export function Hero() {
       </div>
 
       <div className="container mx-auto px-4 md:px-6 relative z-20">
-        <div className="max-w-5xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center">
           <SectionReveal delay={100} duration={600} threshold={0}>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-primary/5 border border-primary/20 text-primary text-[8px] md:text-[10px] font-black mb-6 md:mb-8 tracking-[0.3em] uppercase">
-              <ShieldCheck className="w-3 md:w-3.5 h-3 md:h-3.5" />
-              Institutional Forensic Intelligence
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] md:text-[11px] font-bold mb-6 tracking-[0.25em] uppercase">
+              <ShieldCheck className="w-3.5 h-3.5 text-primary" />
+              Scam Recovery & Financial Fraud Assistance
             </div>
             
-            <h1 className="text-4xl sm:text-5xl md:text-8xl font-headline font-bold leading-[1] md:leading-[0.95] mb-6 md:mb-8 tracking-tighter text-white uppercase text-balance">
-              Start a Confidential <br className="hidden sm:block"/>
-              <span className="gradient-text italic font-medium gold-glow">Case Review.</span>
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-headline font-semibold leading-[1.08] mb-6 tracking-tight text-[#F5F0E7] text-balance">
+              Lost Money to a Scam? <br className="hidden sm:block"/>
+              <span className="gradient-text italic font-normal">Understand Your Options.</span>
             </h1>
             
-            <p className="text-sm md:text-xl text-muted-foreground mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed font-medium px-4 md:px-0 text-balance">
-              Lazoronix provides institutional-grade forensic investigation and blockchain tracing for complex asset recovery. We investigate financial fraud, trace digital assets, and identify recovery paths.
+            <p className="text-base md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed font-normal px-4 md:px-0 text-balance">
+              Restiturecore provides scam recovery assistance, fraud investigation, and digital asset tracing to help individuals and businesses assess their options after financial fraud.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 mb-12">
-              <Link href="#forensic-intake" className="w-full sm:w-auto">
-                <Button size="lg" className="h-14 md:h-16 px-8 md:px-12 text-sm md:text-lg bg-primary text-black hover:bg-primary/90 font-black w-full shadow-2xl shadow-primary/20 group uppercase tracking-widest rounded-none transition-all duration-300 premium-cta">
-                  Begin Case Assessment
-                  <ArrowRight className="ml-2 w-4 md:w-5 h-4 md:h-5 group-hover:translate-x-1 transition-transform" />
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+              <Link href="#case-assessment" className="w-full sm:w-auto">
+                <Button size="lg" className="h-13 md:h-14 px-8 md:px-9 text-xs md:text-sm bg-primary text-primary-foreground hover:bg-primary/90 font-bold w-full shadow-lg shadow-black/40 group uppercase tracking-wider rounded-sm transition-all duration-300">
+                  Request a Case Assessment
+                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <div className="flex flex-col items-center gap-3 w-full sm:w-auto">
-                <a href="mailto:investigator@lazoronix.com" className="w-full">
-                  <Button size="lg" variant="outline" className="h-14 md:h-16 px-8 md:px-12 text-sm md:text-lg border-white/10 bg-white/5 hover:bg-white/10 w-full font-bold uppercase tracking-widest rounded-none">
-                    <Mail className="mr-2 w-4 h-4" /> Email Our Investigation Team
-                  </Button>
-                </a>
-                <span className="text-[10px] font-black text-primary uppercase tracking-widest">investigator@lazoronix.com</span>
-              </div>
+              <Link href="#services" className="w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="h-13 md:h-14 px-8 md:px-9 text-xs md:text-sm border-white/10 bg-white/[0.02] hover:bg-white/[0.06] hover:border-primary/40 text-[#F5F0E7] w-full font-semibold uppercase tracking-wider rounded-sm transition-all">
+                  Explore Recovery Services
+                </Button>
+              </Link>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 opacity-60">
-               <div className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground flex items-center gap-2">
-                 <span className="w-1.5 h-1.5 rounded-full bg-primary" /> Confidential case enquiries
-               </div>
-               <div className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground flex items-center gap-2">
-                 <span className="w-1.5 h-1.5 rounded-full bg-primary" /> Secure submission
-               </div>
-               <div className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground flex items-center gap-2">
-                 <span className="w-1.5 h-1.5 rounded-full bg-primary" /> Human specialist review
-               </div>
+            <p className="text-xs text-muted-foreground font-medium mb-10 tracking-wide">
+              A confidential initial enquiry. Clear next steps. <span className="text-[#F5F0E7]/80">No guaranteed recovery claims.</span>
+            </p>
+
+            <div className="pt-8 border-t border-white/[0.06] grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+              <div className="text-left md:text-center space-y-1">
+                <p className="text-[10px] uppercase font-bold tracking-widest text-[#F5F0E7]/90">Objective Assessment</p>
+                <p className="text-[9px] uppercase tracking-wider text-muted-foreground">Honest Feasibility Review</p>
+              </div>
+              <div className="text-left md:text-center space-y-1">
+                <p className="text-[10px] uppercase font-bold tracking-widest text-[#F5F0E7]/90">Evidence Led</p>
+                <p className="text-[9px] uppercase tracking-wider text-muted-foreground">On-Chain & Rail Tracing</p>
+              </div>
+              <div className="text-left md:text-center space-y-1">
+                <p className="text-[10px] uppercase font-bold tracking-widest text-[#F5F0E7]/90">No Pressure</p>
+                <p className="text-[9px] uppercase tracking-wider text-muted-foreground">Zero False Promises</p>
+              </div>
+              <div className="text-left md:text-center space-y-1">
+                <p className="text-[10px] uppercase font-bold tracking-widest text-[#F5F0E7]/90">Strict Privacy</p>
+                <p className="text-[9px] uppercase tracking-wider text-muted-foreground">AES-256 Vault Quarantine</p>
+              </div>
             </div>
           </SectionReveal>
         </div>

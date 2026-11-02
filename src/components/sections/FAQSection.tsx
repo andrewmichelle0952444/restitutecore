@@ -9,58 +9,44 @@ import { ShieldCheck, Search, Wallet, AlertCircle, FileText } from 'lucide-react
 
 const knowledgeCategories = [
   {
-    title: "Scam Investigations",
+    title: "Realistic Recovery Expectations",
     icon: AlertCircle,
     questions: [
       {
-        question: "Can money lost to a forex or investment scam really be recovered?",
-        answer: "Recovery feasibility depends on the integrity of the digital trail. We use blockchain forensics to trace fund movement. Once identified on an exchange or a known node, institutional recovery pathways involving legal-technical coordination can be explored."
+        question: "Can money lost to a scam always be recovered?",
+        answer: "No legitimate investigator can guarantee fund recovery. Feasibility depends entirely on whether the digital asset trail leads to regulated, identifiable institutions (such as KYC-compliant crypto exchanges or domestic receiving banks) where legal or compliance interdiction is possible. Our role is to provide an objective evidence assessment so you understand your real options before committing resources."
       },
       {
-        question: "How do you handle complex social engineering or romance scams?",
-        answer: "These cases require a synthesis of OSINT (Open Source Intelligence) and blockchain analysis. We map the infrastructure used by the perpetrator and track assets across multiple layers to identify a definitive resolution point."
+        question: "What is a 'secondary recovery scam' and how do I avoid it?",
+        answer: "Secondary recovery scammers target victims of fraud, falsely claiming they can 'hack back' stolen crypto or demanding upfront 'clearance fees' and 'recovery taxes'. Restiturecore never makes guarantee claims, never claims to hack blockchains, and operates as a legally registered corporate entity providing verifiable investigative documentation."
       }
     ]
   },
   {
-    title: "Wallet Access Cases",
-    icon: Wallet,
-    questions: [
-      {
-        question: "I lost the seed phrase or password to my hardware wallet. Can you help?",
-        answer: "Yes. Our specialists utilize high-compute forensic workstations and specialized cryptographic recovery protocols to regain access to hardware and software wallets where partial credential data is available."
-      },
-      {
-        question: "What specific devices do you support for forensic extraction?",
-        answer: "We provide technical support for Ledger, Trezor, and KeepKey hardware, as well as encrypted local volumes and legacy wallet files (e.g., wallet.dat) on corrupted storage drives."
-      }
-    ]
-  },
-  {
-    title: "Asset Tracing Cases",
+    title: "Fees & Timelines",
     icon: Search,
     questions: [
       {
-        question: "Can you trace funds if they were sent through a mixer or tumbler?",
-        answer: "While mixers increase obfuscation, advanced cluster analysis and heuristic tracking often identify the exit nodes. Our intelligence identifies the ultimate destination wallets, typically at major exchanges, where interdiction is possible."
+        question: "How does Restiturecore charge for services?",
+        answer: "Our initial case assessment and preliminary feasibility review are confidential. If the preliminary findings indicate that a viable recovery or legal pathway exists, any further forensic analysis or formal evidentiary reporting is conducted under a transparent, agreed-upon scope without hidden fees."
       },
       {
-        question: "How long does a formal forensic asset trace typically take?",
-        answer: "A preliminary assessment is completed within 48-72 hours. A full forensic lifecycle for complex cases typically spans 2-4 weeks, depending on the depth of fund obfuscation and the number of cross-chain hops."
+        question: "How long does an investigation typically take?",
+        answer: "Initial feasibility reviews are completed within 24–48 hours. A full on-chain trace or banking rail audit generally spans 1 to 3 weeks, depending on the complexity of transaction layering, cross-chain bridge usage, and multi-jurisdictional receiving nodes."
       }
     ]
   },
   {
-    title: "Security & Protocols",
+    title: "Evidence & Privacy Protocols",
     icon: ShieldCheck,
     questions: [
       {
-        question: "How is my sensitive evidence protected during the investigation?",
-        answer: "Lazoronix operates under restricted institutional privacy protocols. All evidence, communications, and technical data are stored in AES-256 encrypted vaults with access limited to assigned senior analysts."
+        question: "What documentation is required to begin?",
+        answer: "Key documentation includes transaction hashes (TXIDs), receiving wallet addresses, deposit receipts, bank transfer confirmation slips, broker domain URLs, and chat/email transcripts with the suspected entity."
       },
       {
-        question: "Is there an upfront fee for the initial feasibility assessment?",
-        answer: "The initial case review and AI-guided forensic scan are free. We lead with evidence first, ensuring a viable recovery pathway exists before a formal investigative engagement is initialized."
+        question: "Does Restiturecore provide legal advice or law enforcement services?",
+        answer: "No. Restiturecore provides specialist digital forensic investigation, on-chain asset tracing, and court-admissible technical dossiers. We prepare evidence suitable for submission to banks, exchange compliance teams, law enforcement agencies, or your legal counsel."
       }
     ]
   }

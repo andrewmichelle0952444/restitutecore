@@ -59,19 +59,19 @@ export function SignsSection() {
             <div className="inline-block p-1 bg-white/5 rounded-2xl w-full max-w-4xl">
               <div className="p-8 md:p-12 glass-card rounded-xl border-white/5 relative overflow-hidden group">
                 <div className="relative z-10">
-                  <h4 className="text-2xl font-headline font-bold mb-6 uppercase tracking-tight">Need to Start Recovery Immediately?</h4>
+                  <h4 className="text-2xl font-headline font-bold mb-6 uppercase tracking-tight">Need a Confidential Case Evaluation?</h4>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-10">
-                    <Link href="#forensic-intake">
-                      <Button size="lg" className="h-16 px-12 text-lg bg-primary text-black hover:bg-primary/90 font-black uppercase tracking-widest group shadow-2xl shadow-primary/20 rounded-none">
-                        Start Recovery Case
-                        <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                    <Link href="#case-assessment">
+                      <Button size="lg" className="h-16 px-12 text-base bg-primary text-primary-foreground hover:bg-primary/90 font-bold uppercase tracking-wider group shadow-2xl rounded-sm">
+                        Request a Case Assessment
+                        <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                       </Button>
                     </Link>
                   </div>
 
                   <div className="pt-8 border-t border-white/5 max-w-2xl mx-auto space-y-4">
                     <p className="text-[11px] text-muted-foreground uppercase tracking-widest font-bold">Or contact us directly</p>
-                    <a href="mailto:investigator@lazoronix.com" className="inline-flex items-center gap-2 text-[12px] font-black uppercase tracking-[0.3em] text-primary hover:gold-glow transition-all">
+                    <a href="mailto:investigator@restiturecore.com" className="inline-flex items-center gap-2 text-[12px] font-black uppercase tracking-[0.3em] text-primary hover:gold-glow transition-all">
                       <Mail className="w-4 h-4" /> Email Our Investigation Team
                     </a>
                   </div>

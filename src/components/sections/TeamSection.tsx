@@ -6,6 +6,7 @@ import { ShieldCheck, User, Award, Globe, Fingerprint } from 'lucide-react';
 import { SectionReveal } from '@/components/ui/section-reveal';
 import placeholderData from '@/app/lib/placeholder-images.json';
 import { supabase } from '@/lib/supabase';
+import { ASSET_SYNC_EVENT } from '@/lib/brand-assets';
 
 const teamMembers = [
   { 
@@ -48,6 +49,24 @@ export function TeamSection() {
 
   useEffect(() => {
     fetchCustomAssets();
+
+    const handleSync = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const asset = customEvent.detail?.assetName;
+      if (!asset || asset.startsWith('team-') || asset === 'all') {
+        fetchCustomAssets();
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener(ASSET_SYNC_EVENT, handleSync);
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener(ASSET_SYNC_EVENT, handleSync);
+      }
+    };
   }, []);
 
   const fetchCustomAssets = async () => {
@@ -59,8 +78,6 @@ export function TeamSection() {
         .getPublicUrl(fileName);
       
       if (data?.publicUrl) {
-        // We verify if it's a "real" file or just a fallback by checking for 404 in an actual app, 
-        // but here we'll just attempt to use it with a cache-buster.
         urls[member.id] = `${data.publicUrl}?t=${Date.now()}`;
       }
     }

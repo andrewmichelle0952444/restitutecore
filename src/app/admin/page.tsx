@@ -36,7 +36,12 @@ import {
   Briefcase,
   Download,
   Database,
-  Lock
+  Lock,
+  Copy,
+  ExternalLink,
+  RefreshCw,
+  Check,
+  Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -63,6 +68,7 @@ import {
   DialogDescription,
   DialogTrigger 
 } from '@/components/ui/dialog';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -70,6 +76,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import placeholderData from '@/app/lib/placeholder-images.json';
+import { 
+  useBrandAsset, 
+  listSupabaseAssets, 
+  uploadSupabaseAsset, 
+  deleteSupabaseAsset, 
+  StorageAssetFile,
+  getStorageAssetUrl 
+} from '@/lib/brand-assets';
 
 type CaseRecord = {
   id: string;
@@ -141,7 +155,8 @@ export default function AdminDashboard() {
   const [stories, setStories] = useState<SuccessStory[]>([]);
   const [loading, setLoading] = useState(true);
   
-  // Logo State
+  // Logo State & Real-time Brand Sync Hook
+  const { url: dynamicLogoUrl } = useBrandAsset('logo.png');
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [uploadingLogo, setUploadingLogo] = useState(false);
@@ -152,6 +167,31 @@ export default function AdminDashboard() {
   const [heroBgPreview, setHeroBgPreview] = useState<string | null>(null);
   const [uploadingHeroBg, setUploadingHeroBg] = useState(false);
   const [heroBgUrl, setHeroBgUrl] = useState<string | null>(null);
+
+  // Security Seal & Social OpenGraph State
+  const [sealFile, setSealFile] = useState<File | null>(null);
+  const [sealPreview, setSealPreview] = useState<string | null>(null);
+  const [uploadingSeal, setUploadingSeal] = useState(false);
+  const [sealUrl, setSealUrl] = useState<string | null>(null);
+
+  const [ogFile, setOgFile] = useState<File | null>(null);
+  const [ogPreview, setOgPreview] = useState<string | null>(null);
+  const [uploadingOg, setUploadingOg] = useState(false);
+  const [ogUrl, setOgUrl] = useState<string | null>(null);
+
+  // Unified Brand & Assets Manager State
+  const [isAssetManagerOpen, setIsAssetManagerOpen] = useState(false);
+  const [storageAssets, setStorageAssets] = useState<StorageAssetFile[]>([]);
+  const [loadingAssets, setLoadingAssets] = useState(false);
+  const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
+  const [assetSearchQuery, setAssetSearchQuery] = useState('');
+  const [activeAssetTab, setActiveAssetTab] = useState('branding');
+
+  // Custom Asset Upload State
+  const [customName, setCustomName] = useState('');
+  const [customFile, setCustomFile] = useState<File | null>(null);
+  const [customPreview, setCustomPreview] = useState<string | null>(null);
+  const [uploadingCustom, setUploadingCustom] = useState(false);
   
   // Success Story Form State
   const [isStoryDialogOpen, setIsStoryDialogOpen] = useState(false);
@@ -182,6 +222,8 @@ export default function AdminDashboard() {
     fetchStories();
     fetchLogo();
     fetchHeroBg();
+    fetchSeal();
+    fetchOg();
   }, []);
 
   const checkAuth = async () => {
@@ -216,6 +258,34 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       setHeroBgUrl(null);
+    }
+  };
+
+  const fetchSeal = async () => {
+    try {
+      const { data } = supabase.storage
+        .from('assets')
+        .getPublicUrl('seal.png');
+      
+      if (data?.publicUrl) {
+        setSealUrl(`${data.publicUrl}?t=${Date.now()}`);
+      }
+    } catch {
+      setSealUrl(null);
+    }
+  };
+
+  const fetchOg = async () => {
+    try {
+      const { data } = supabase.storage
+        .from('assets')
+        .getPublicUrl('og-image.png');
+      
+      if (data?.publicUrl) {
+        setOgUrl(`${data.publicUrl}?t=${Date.now()}`);
+      }
+    } catch {
+      setOgUrl(null);
     }
   };
 
@@ -300,6 +370,59 @@ export default function AdminDashboard() {
     }
   };
 
+  const loadStorageAssets = async () => {
+    setLoadingAssets(true);
+    try {
+      const list = await listSupabaseAssets();
+      setStorageAssets(list);
+    } catch (e) {
+      console.error('Error listing assets from Supabase:', e);
+    } finally {
+      setLoadingAssets(false);
+    }
+  };
+
+  const handleCopyUrl = (url: string) => {
+    if (!url) return;
+    navigator.clipboard.writeText(url);
+    setCopiedUrl(url);
+    setTimeout(() => setCopiedUrl(null), 2500);
+    toast({
+      title: "Public CDN URL Copied",
+      description: "Direct Supabase storage public link copied to clipboard.",
+    });
+  };
+
+  const handleDeleteStorageAsset = async (fileName: string) => {
+    if (!confirm(`Are you sure you want to permanently delete "${fileName}" from Supabase Storage? This will remove it from all synced website sections.`)) return;
+    const res = await deleteSupabaseAsset(fileName);
+    if (res.success) {
+      toast({
+        title: "Asset Removed",
+        description: `"${fileName}" was removed from Supabase storage and website components were notified.`,
+      });
+      loadStorageAssets();
+      if (fileName === 'logo.png') fetchLogo();
+      if (fileName === 'hero-bg.png') fetchHeroBg();
+      if (fileName === 'seal.png') fetchSeal();
+      if (fileName === 'og-image.png') fetchOg();
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Delete Failed",
+        description: res.error,
+      });
+    }
+  };
+
+  const formatFileSize = (bytes?: number) => {
+    if (!bytes || bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+  };
+
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -311,32 +434,24 @@ export default function AdminDashboard() {
   const uploadLogo = async () => {
     if (!logoFile) return;
     setUploadingLogo(true);
+    const res = await uploadSupabaseAsset('logo.png', logoFile);
+    setUploadingLogo(false);
 
-    try {
-      const { error } = await supabase.storage
-        .from('assets')
-        .upload('logo.png', logoFile, {
-          upsert: true,
-          contentType: logoFile.type
-        });
-
-      if (error) throw error;
-
+    if (res.success) {
       toast({
-        title: "Branding Updated",
-        description: "The website logo has been successfully synchronized.",
+        title: "Platform Logo Synchronized",
+        description: "The website logo has been uploaded to Supabase Storage and synced with Header, Footer, Admin Login, and Command Center.",
       });
       setLogoFile(null);
       setLogoPreview(null);
       fetchLogo();
-    } catch (error: any) {
+      loadStorageAssets();
+    } else {
       toast({
         variant: "destructive",
         title: "Upload Error",
-        description: error.message || "Ensure 'assets' bucket exists and is Public.",
+        description: res.error || "Ensure 'assets' bucket exists and is Public.",
       });
-    } finally {
-      setUploadingLogo(false);
     }
   };
 
@@ -351,32 +466,88 @@ export default function AdminDashboard() {
   const uploadHeroBg = async () => {
     if (!heroBgFile) return;
     setUploadingHeroBg(true);
+    const res = await uploadSupabaseAsset('hero-bg.png', heroBgFile);
+    setUploadingHeroBg(false);
 
-    try {
-      const { error } = await supabase.storage
-        .from('assets')
-        .upload('hero-bg.png', heroBgFile, {
-          upsert: true,
-          contentType: heroBgFile.type
-        });
-
-      if (error) throw error;
-
+    if (res.success) {
       toast({
-        title: "Hero Synchronized",
-        description: "The hero background has been successfully updated.",
+        title: "Hero Background Synchronized",
+        description: "The hero background has been uploaded to Supabase Storage and synced with the homepage Hero section.",
       });
       setHeroBgFile(null);
       setHeroBgPreview(null);
       fetchHeroBg();
-    } catch (error: any) {
+      loadStorageAssets();
+    } else {
       toast({
         variant: "destructive",
         title: "Upload Error",
-        description: error.message,
+        description: res.error,
       });
-    } finally {
-      setUploadingHeroBg(false);
+    }
+  };
+
+  const handleSealChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSealFile(file);
+      setSealPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const uploadSeal = async () => {
+    if (!sealFile) return;
+    setUploadingSeal(true);
+    const res = await uploadSupabaseAsset('seal.png', sealFile);
+    setUploadingSeal(false);
+
+    if (res.success) {
+      toast({
+        title: "Security Seal Synchronized",
+        description: "Security Trust Seal uploaded to Supabase Storage and synced with trust badges.",
+      });
+      setSealFile(null);
+      setSealPreview(null);
+      fetchSeal();
+      loadStorageAssets();
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Upload Error",
+        description: res.error,
+      });
+    }
+  };
+
+  const handleOgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setOgFile(file);
+      setOgPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const uploadOg = async () => {
+    if (!ogFile) return;
+    setUploadingOg(true);
+    const res = await uploadSupabaseAsset('og-image.png', ogFile);
+    setUploadingOg(false);
+
+    if (res.success) {
+      toast({
+        title: "Social Banner Synchronized",
+        description: "OpenGraph social preview banner uploaded to Supabase Storage.",
+      });
+      setOgFile(null);
+      setOgPreview(null);
+      fetchOg();
+      loadStorageAssets();
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Upload Error",
+        description: res.error,
+      });
     }
   };
 
@@ -391,33 +562,69 @@ export default function AdminDashboard() {
   const uploadAsset = async () => {
     if (!assetFile || !selectedAssetId) return;
     setUploadingAsset(true);
+    const fileName = `${selectedAssetId}.png`;
+    const res = await uploadSupabaseAsset(fileName, assetFile);
+    setUploadingAsset(false);
 
-    try {
-      const fileName = `${selectedAssetId}.png`;
-      const { error } = await supabase.storage
-        .from('assets')
-        .upload(fileName, assetFile, {
-          upsert: true,
-          contentType: assetFile.type
-        });
-
-      if (error) throw error;
-
+    if (res.success) {
       toast({
         title: "Media Synchronized",
-        description: `The asset '${selectedAssetId}' has been updated successfully.`,
+        description: `The asset '${selectedAssetId}' has been uploaded to Supabase Storage and synced across the website.`,
       });
       setAssetFile(null);
       setAssetPreview(null);
       setSelectedAssetId(null);
-    } catch (error: any) {
+      loadStorageAssets();
+    } else {
       toast({
         variant: "destructive",
         title: "Media Error",
-        description: error.message,
+        description: res.error,
       });
-    } finally {
-      setUploadingAsset(false);
+    }
+  };
+
+  const handleCustomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setCustomFile(file);
+      setCustomPreview(URL.createObjectURL(file));
+      if (!customName) {
+        setCustomName(file.name);
+      }
+    }
+  };
+
+  const uploadCustomAsset = async () => {
+    if (!customFile || !customName.trim()) {
+      toast({
+        variant: "destructive",
+        title: "Missing Information",
+        description: "Please specify both a target file and filename.",
+      });
+      return;
+    }
+    setUploadingCustom(true);
+    const sanitized = customName.trim().replace(/[^a-zA-Z0-9._-]/g, '-');
+    const finalName = sanitized.includes('.') ? sanitized : `${sanitized}.png`;
+    const res = await uploadSupabaseAsset(finalName, customFile);
+    setUploadingCustom(false);
+
+    if (res.success) {
+      toast({
+        title: "Custom Asset Synchronized",
+        description: `Successfully uploaded '${finalName}' to Supabase Storage and broadcast to website components.`,
+      });
+      setCustomFile(null);
+      setCustomPreview(null);
+      setCustomName('');
+      loadStorageAssets();
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Upload Error",
+        description: res.error,
+      });
     }
   };
 
@@ -427,11 +634,11 @@ export default function AdminDashboard() {
         <div className="flex items-center gap-3 md:gap-4">
           <div className={cn(
             "w-10 h-10 md:w-12 md:h-12 rounded flex items-center justify-center transition-all overflow-hidden",
-            logoUrl ? "bg-transparent p-0.5" : "bg-primary shadow-lg"
+            (dynamicLogoUrl || logoUrl) ? "bg-transparent p-0.5" : "bg-primary shadow-lg"
           )}>
-            {logoUrl ? (
+            {(dynamicLogoUrl || logoUrl) ? (
               <img 
-                src={logoUrl} 
+                src={dynamicLogoUrl || logoUrl || ''} 
                 alt="Logo" 
                 className="w-full h-full object-contain"
                 onError={() => setLogoUrl(null)}
@@ -452,17 +659,20 @@ export default function AdminDashboard() {
                 <Settings className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-card border-white/10 w-48">
-               <DropdownMenuItem onClick={() => setIsStoryDialogOpen(true)} className="uppercase text-[10px] font-black tracking-widest">
+            <DropdownMenuContent align="end" className="bg-card border-white/10 w-56">
+               <DropdownMenuItem onClick={() => setIsStoryDialogOpen(true)} className="uppercase text-[10px] font-black tracking-widest cursor-pointer">
                   <Star className="w-3.5 h-3.5 mr-2" /> Resolutions
                </DropdownMenuItem>
-               <DropdownMenuItem className="uppercase text-[10px] font-black tracking-widest">
-                  <Settings className="w-3.5 h-3.5 mr-2" /> Branding
+               <DropdownMenuItem 
+                 onClick={() => {
+                   setIsAssetManagerOpen(true);
+                   loadStorageAssets();
+                 }} 
+                 className="uppercase text-[10px] font-black tracking-widest cursor-pointer text-primary"
+               >
+                  <Sparkles className="w-3.5 h-3.5 mr-2" /> Brand & Assets Sync
                </DropdownMenuItem>
-               <DropdownMenuItem className="uppercase text-[10px] font-black tracking-widest">
-                  <Layers className="w-3.5 h-3.5 mr-2" /> Media Library
-               </DropdownMenuItem>
-               <DropdownMenuItem onClick={handleLogout} className="text-destructive uppercase text-[10px] font-black tracking-widest">
+               <DropdownMenuItem onClick={handleLogout} className="text-destructive uppercase text-[10px] font-black tracking-widest cursor-pointer">
                   <LogOut className="w-3.5 h-3.5 mr-2" /> Logout
                </DropdownMenuItem>
             </DropdownMenuContent>
@@ -558,165 +768,498 @@ export default function AdminDashboard() {
               </DialogContent>
             </Dialog>
 
-            <Dialog>
+            {/* UNIFIED SUPABASE BRAND & MEDIA ASSET SYNC CENTER */}
+            <Dialog open={isAssetManagerOpen} onOpenChange={setIsAssetManagerOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="border-white/5 bg-white/5 uppercase text-[9px] font-black tracking-widest h-9">
-                  <Settings className="w-3.5 h-3.5 mr-2" /> Branding
+                <Button 
+                  onClick={() => {
+                    setIsAssetManagerOpen(true);
+                    loadStorageAssets();
+                  }}
+                  variant="outline" 
+                  size="sm" 
+                  className="border-primary/30 bg-primary/10 text-primary hover:bg-primary hover:text-black uppercase text-[9px] font-black tracking-widest h-9 transition-all"
+                >
+                  <Sparkles className="w-3.5 h-3.5 mr-2" /> Brand & Assets Sync
                 </Button>
               </DialogTrigger>
-              <DialogContent className="glass-card border-white/10 max-w-md max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle className="text-xl font-headline font-bold uppercase tracking-tight">Branding Management</DialogTitle>
-                  <DialogDescription className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">Update website logo and hero background</DialogDescription>
-                </DialogHeader>
-                <div className="py-6 space-y-8">
-                  {/* Logo Upload Section */}
-                  <div className="space-y-4">
-                    <Label className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
-                      <ImageIcon className="w-3.5 h-3.5" /> Platform Logo
-                    </Label>
-                    <div className="flex flex-col items-center justify-center p-6 border border-dashed border-white/10 bg-white/5 relative group cursor-pointer overflow-hidden">
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        className="absolute inset-0 opacity-0 cursor-pointer z-20"
-                        onChange={handleLogoChange}
-                      />
-                      {logoPreview ? (
-                        <img src={logoPreview} alt="Preview" className="h-16 w-auto object-contain mb-4" />
-                      ) : (
-                        <Upload className="w-8 h-8 text-muted-foreground opacity-30 mb-4" />
-                      )}
-                      <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground text-center px-4">
-                        {logoFile ? logoFile.name : 'Select Logo (PNG/SVG Preferred)'}
-                      </p>
+              <DialogContent className="glass-card border-white/10 max-w-5xl max-h-[92vh] overflow-y-auto p-6 md:p-8">
+                <DialogHeader className="border-b border-white/5 pb-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <DialogTitle className="text-xl md:text-2xl font-headline font-bold uppercase tracking-tight flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-primary" /> Brand & Storage Assets Sync Center
+                      </DialogTitle>
+                      <DialogDescription className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">
+                        Upload to Supabase Storage bucket (<span className="text-primary font-bold">assets</span>) with real-time website synchronization
+                      </DialogDescription>
                     </div>
-                    <Button 
-                      onClick={uploadLogo} 
-                      disabled={!logoFile || uploadingLogo}
-                      size="sm"
-                      className="w-full h-10 bg-primary text-black font-black uppercase tracking-widest premium-cta"
-                    >
-                      {uploadingLogo ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Upload className="w-4 h-4 mr-2" />}
-                      Sync Logo
-                    </Button>
+                    <Badge variant="outline" className="border-primary/30 text-primary text-[9px] uppercase tracking-widest hidden sm:inline-flex">
+                      Bucket: assets (Public)
+                    </Badge>
                   </div>
-
-                  {/* Hero Background Upload Section */}
-                  <div className="space-y-4">
-                    <Label className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
-                      <ImageIcon className="w-3.5 h-3.5" /> Hero Background
-                    </Label>
-                    <div className="flex flex-col items-center justify-center p-6 border border-dashed border-white/10 bg-white/5 relative group cursor-pointer overflow-hidden">
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        className="absolute inset-0 opacity-0 cursor-pointer z-20"
-                        onChange={handleHeroBgChange}
-                      />
-                      {heroBgPreview ? (
-                        <img src={heroBgPreview} alt="Preview" className="h-16 w-auto object-contain mb-4" />
-                      ) : (
-                        <Upload className="w-8 h-8 text-muted-foreground opacity-30 mb-4" />
-                      )}
-                      <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground text-center px-4">
-                        {heroBgFile ? heroBgFile.name : 'Select Hero Background (High-Res)'}
-                      </p>
-                    </div>
-                    <Button 
-                      onClick={uploadHeroBg} 
-                      disabled={!heroBgFile || uploadingHeroBg}
-                      size="sm"
-                      className="w-full h-10 bg-primary text-black font-black uppercase tracking-widest premium-cta"
-                    >
-                      {uploadingHeroBg ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Upload className="w-4 h-4 mr-2" />}
-                      Sync Hero Background
-                    </Button>
-                  </div>
-                  
-                  <div className="p-4 bg-primary/5 border border-primary/20 space-y-3">
-                    <p className="text-[10px] text-primary font-bold uppercase tracking-widest flex items-center gap-2">
-                      <Info className="w-3.5 h-3.5" /> Project Configuration
-                    </p>
-                    <p className="text-[8px] text-muted-foreground uppercase tracking-widest leading-relaxed">
-                      1. Go to Supabase &gt; Storage<br />
-                      2. Create a bucket named <span className="text-primary font-bold">assets</span><br />
-                      3. Set the bucket to <span className="text-primary font-bold">Public</span>
-                    </p>
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="border-white/5 bg-white/5 uppercase text-[9px] font-black tracking-widest h-9">
-                  <Layers className="w-3.5 h-3.5 mr-2" /> Media Library
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="glass-card border-white/10 max-w-2xl max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle className="text-xl font-headline font-bold uppercase tracking-tight">Technical Asset Library</DialogTitle>
-                  <DialogDescription className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">Manage website imagery and forensic personnel avatars</DialogDescription>
                 </DialogHeader>
-                
-                <div className="py-6 space-y-8">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    {placeholderData.placeholderImages.map((asset) => (
-                      <div 
-                        key={asset.id}
-                        onClick={() => setSelectedAssetId(asset.id)}
-                        className={cn(
-                          "p-4 border border-white/5 bg-white/5 cursor-pointer hover:border-primary/50 transition-all text-center space-y-3",
-                          selectedAssetId === asset.id && "border-primary bg-primary/5"
-                        )}
-                      >
-                        <div className="aspect-[4/5] bg-black/40 flex items-center justify-center relative overflow-hidden">
-                           <img src={asset.imageUrl} alt={asset.id} className="object-cover w-full h-full opacity-40" />
-                           <div className="absolute inset-0 flex items-center justify-center">
-                              <ImageIcon className="w-6 h-6 text-white opacity-20" />
-                           </div>
-                        </div>
-                        <p className="text-[8px] font-black uppercase tracking-widest">{asset.id.replace('-', ' ')}</p>
-                      </div>
-                    ))}
-                  </div>
 
-                  {selectedAssetId && (
-                    <div className="p-8 border border-primary/20 bg-primary/5 space-y-6 animate-in fade-in slide-in-from-top-4 duration-300">
-                      <div className="flex justify-between items-center">
-                        <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Upload Replacement for {selectedAssetId}</h4>
-                        <Button variant="ghost" size="sm" onClick={() => setSelectedAssetId(null)} className="h-6 text-[8px] uppercase font-bold tracking-widest">Cancel</Button>
-                      </div>
+                <Tabs defaultValue="branding" value={activeAssetTab} onValueChange={setActiveAssetTab} className="mt-6">
+                  <TabsList className="bg-white/5 border border-white/10 p-1 w-full justify-start overflow-x-auto h-auto flex-wrap">
+                    <TabsTrigger value="branding" className="text-[9px] uppercase font-black tracking-widest data-[state=active]:bg-primary data-[state=active]:text-black">
+                      <ImageIcon className="w-3.5 h-3.5 mr-1.5" /> Core Brand Assets
+                    </TabsTrigger>
+                    <TabsTrigger value="team" className="text-[9px] uppercase font-black tracking-widest data-[state=active]:bg-primary data-[state=active]:text-black">
+                      <User className="w-3.5 h-3.5 mr-1.5" /> Personnel & Facilities
+                    </TabsTrigger>
+                    <TabsTrigger value="custom" className="text-[9px] uppercase font-black tracking-widest data-[state=active]:bg-primary data-[state=active]:text-black">
+                      <Upload className="w-3.5 h-3.5 mr-1.5" /> Custom File Uploader
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="explorer" 
+                      onClick={loadStorageAssets}
+                      className="text-[9px] uppercase font-black tracking-widest data-[state=active]:bg-primary data-[state=active]:text-black"
+                    >
+                      <Database className="w-3.5 h-3.5 mr-1.5" /> Storage Explorer ({storageAssets.length})
+                    </TabsTrigger>
+                  </TabsList>
+
+                  {/* TAB 1: CORE BRAND ASSETS */}
+                  <TabsContent value="branding" className="mt-6 space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
                       
-                      <div className="flex flex-col items-center justify-center p-8 border border-dashed border-primary/20 bg-black/40 relative group cursor-pointer">
-                        <input 
-                          type="file" 
-                          accept="image/*" 
-                          className="absolute inset-0 opacity-0 cursor-pointer z-20"
-                          onChange={handleAssetChange}
-                        />
-                        {assetPreview ? (
-                          <img src={assetPreview} alt="Preview" className="h-32 w-auto object-contain mb-4" />
-                        ) : (
-                          <Upload className="w-10 h-10 text-primary opacity-30 mb-4" />
-                        )}
-                        <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">
-                          {assetFile ? assetFile.name : 'Click to Upload High-Res Media'}
+                      {/* Brand Logo Card */}
+                      <Card className="glass-card border-white/10 p-6 flex flex-col justify-between space-y-4">
+                        <div>
+                          <div className="flex justify-between items-start mb-3">
+                            <Label className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
+                              <Shield className="w-3.5 h-3.5" /> Platform Logo (<code className="text-white">logo.png</code>)
+                            </Label>
+                            <Badge variant="outline" className="text-[8px] uppercase tracking-widest border-primary/20 text-primary">
+                              Header / Footer / Login
+                            </Badge>
+                          </div>
+                          <p className="text-[9px] text-muted-foreground uppercase tracking-wider mb-4">
+                            High-resolution PNG or SVG logo displayed across the entire platform.
+                          </p>
+                          <div className="flex flex-col items-center justify-center p-6 border border-dashed border-white/10 bg-black/40 relative group cursor-pointer overflow-hidden min-h-[140px]">
+                            <input 
+                              type="file" 
+                              accept="image/*" 
+                              className="absolute inset-0 opacity-0 cursor-pointer z-20"
+                              onChange={handleLogoChange}
+                            />
+                            {logoPreview ? (
+                              <img src={logoPreview} alt="Preview" className="h-16 w-auto object-contain mb-2" />
+                            ) : (dynamicLogoUrl || logoUrl) ? (
+                              <img src={dynamicLogoUrl || logoUrl || ''} alt="Current Logo" className="h-16 w-auto object-contain mb-2" />
+                            ) : (
+                              <Upload className="w-8 h-8 text-muted-foreground opacity-30 mb-2" />
+                            )}
+                            <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground text-center px-4">
+                              {logoFile ? logoFile.name : 'Click or drop to replace logo'}
+                            </p>
+                          </div>
+                        </div>
+                        <Button 
+                          onClick={uploadLogo} 
+                          disabled={!logoFile || uploadingLogo}
+                          size="sm"
+                          className="w-full h-10 bg-primary text-black font-black uppercase tracking-widest premium-cta"
+                        >
+                          {uploadingLogo ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Upload className="w-4 h-4 mr-2" />}
+                          Sync Platform Logo
+                        </Button>
+                      </Card>
+
+                      {/* Hero Background Card */}
+                      <Card className="glass-card border-white/10 p-6 flex flex-col justify-between space-y-4">
+                        <div>
+                          <div className="flex justify-between items-start mb-3">
+                            <Label className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
+                              <ImageIcon className="w-3.5 h-3.5" /> Hero Background (<code className="text-white">hero-bg.png</code>)
+                            </Label>
+                            <Badge variant="outline" className="text-[8px] uppercase tracking-widest border-primary/20 text-primary">
+                              Homepage Hero
+                            </Badge>
+                          </div>
+                          <p className="text-[9px] text-muted-foreground uppercase tracking-wider mb-4">
+                            High-resolution atmospheric image rendered with dark forensic overlay on the main hero.
+                          </p>
+                          <div className="flex flex-col items-center justify-center p-6 border border-dashed border-white/10 bg-black/40 relative group cursor-pointer overflow-hidden min-h-[140px]">
+                            <input 
+                              type="file" 
+                              accept="image/*" 
+                              className="absolute inset-0 opacity-0 cursor-pointer z-20"
+                              onChange={handleHeroBgChange}
+                            />
+                            {heroBgPreview ? (
+                              <img src={heroBgPreview} alt="Preview" className="h-20 w-full object-cover mb-2" />
+                            ) : heroBgUrl ? (
+                              <img src={heroBgUrl} alt="Current Hero BG" className="h-20 w-full object-cover opacity-60 mb-2" />
+                            ) : (
+                              <Upload className="w-8 h-8 text-muted-foreground opacity-30 mb-2" />
+                            )}
+                            <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground text-center px-4">
+                              {heroBgFile ? heroBgFile.name : 'Click or drop to replace hero background'}
+                            </p>
+                          </div>
+                        </div>
+                        <Button 
+                          onClick={uploadHeroBg} 
+                          disabled={!heroBgFile || uploadingHeroBg}
+                          size="sm"
+                          className="w-full h-10 bg-primary text-black font-black uppercase tracking-widest premium-cta"
+                        >
+                          {uploadingHeroBg ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Upload className="w-4 h-4 mr-2" />}
+                          Sync Hero Background
+                        </Button>
+                      </Card>
+
+                      {/* Security Trust Seal */}
+                      <Card className="glass-card border-white/10 p-6 flex flex-col justify-between space-y-4">
+                        <div>
+                          <div className="flex justify-between items-start mb-3">
+                            <Label className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
+                              <ShieldCheck className="w-3.5 h-3.5" /> Security Trust Seal (<code className="text-white">seal.png</code>)
+                            </Label>
+                            <Badge variant="outline" className="text-[8px] uppercase tracking-widest border-white/10">
+                              Verification Crest
+                            </Badge>
+                          </div>
+                          <p className="text-[9px] text-muted-foreground uppercase tracking-wider mb-4">
+                            Cryptographic verification seal or official crest for institutional trust.
+                          </p>
+                          <div className="flex flex-col items-center justify-center p-6 border border-dashed border-white/10 bg-black/40 relative group cursor-pointer overflow-hidden min-h-[140px]">
+                            <input 
+                              type="file" 
+                              accept="image/*" 
+                              className="absolute inset-0 opacity-0 cursor-pointer z-20"
+                              onChange={handleSealChange}
+                            />
+                            {sealPreview ? (
+                              <img src={sealPreview} alt="Preview" className="h-16 w-auto object-contain mb-2" />
+                            ) : sealUrl ? (
+                              <img src={sealUrl} alt="Current Seal" className="h-16 w-auto object-contain mb-2" />
+                            ) : (
+                              <ShieldCheck className="w-8 h-8 text-muted-foreground opacity-30 mb-2" />
+                            )}
+                            <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground text-center px-4">
+                              {sealFile ? sealFile.name : 'Click or drop to replace seal'}
+                            </p>
+                          </div>
+                        </div>
+                        <Button 
+                          onClick={uploadSeal} 
+                          disabled={!sealFile || uploadingSeal}
+                          size="sm"
+                          className="w-full h-10 bg-primary text-black font-black uppercase tracking-widest premium-cta"
+                        >
+                          {uploadingSeal ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Upload className="w-4 h-4 mr-2" />}
+                          Sync Security Seal
+                        </Button>
+                      </Card>
+
+                      {/* Social OpenGraph Banner */}
+                      <Card className="glass-card border-white/10 p-6 flex flex-col justify-between space-y-4">
+                        <div>
+                          <div className="flex justify-between items-start mb-3">
+                            <Label className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
+                              <Globe className="w-3.5 h-3.5" /> Social OG Banner (<code className="text-white">og-image.png</code>)
+                            </Label>
+                            <Badge variant="outline" className="text-[8px] uppercase tracking-widest border-white/10">
+                              SEO & Social Share
+                            </Badge>
+                          </div>
+                          <p className="text-[9px] text-muted-foreground uppercase tracking-wider mb-4">
+                            1200x630 banner shown when links are shared on LinkedIn, X, Telegram, and WhatsApp.
+                          </p>
+                          <div className="flex flex-col items-center justify-center p-6 border border-dashed border-white/10 bg-black/40 relative group cursor-pointer overflow-hidden min-h-[140px]">
+                            <input 
+                              type="file" 
+                              accept="image/*" 
+                              className="absolute inset-0 opacity-0 cursor-pointer z-20"
+                              onChange={handleOgChange}
+                            />
+                            {ogPreview ? (
+                              <img src={ogPreview} alt="Preview" className="h-20 w-full object-cover mb-2" />
+                            ) : ogUrl ? (
+                              <img src={ogUrl} alt="Current OG Banner" className="h-20 w-full object-cover mb-2" />
+                            ) : (
+                              <Globe className="w-8 h-8 text-muted-foreground opacity-30 mb-2" />
+                            )}
+                            <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground text-center px-4">
+                              {ogFile ? ogFile.name : 'Click or drop to replace OG banner'}
+                            </p>
+                          </div>
+                        </div>
+                        <Button 
+                          onClick={uploadOg} 
+                          disabled={!ogFile || uploadingOg}
+                          size="sm"
+                          className="w-full h-10 bg-primary text-black font-black uppercase tracking-widest premium-cta"
+                        >
+                          {uploadingOg ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Upload className="w-4 h-4 mr-2" />}
+                          Sync Social Banner
+                        </Button>
+                      </Card>
+
+                    </div>
+                  </TabsContent>
+
+                  {/* TAB 2: PERSONNEL & FACILITIES */}
+                  <TabsContent value="team" className="mt-6 space-y-6">
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-widest">
+                      Select any forensic investigator or facility avatar below to upload and sync its high-resolution replacement.
+                    </p>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                      {placeholderData.placeholderImages.map((asset) => (
+                        <div 
+                          key={asset.id}
+                          onClick={() => setSelectedAssetId(asset.id)}
+                          className={cn(
+                            "p-3 border border-white/5 bg-white/5 cursor-pointer hover:border-primary/50 transition-all text-center space-y-2",
+                            selectedAssetId === asset.id && "border-primary bg-primary/10 ring-1 ring-primary"
+                          )}
+                        >
+                          <div className="aspect-square bg-black/50 flex items-center justify-center relative overflow-hidden">
+                             <img 
+                               src={`https://rehqxfabupmrwnofzfke.supabase.co/storage/v1/object/public/assets/${asset.id}.png`} 
+                               alt={asset.id} 
+                               className="object-cover w-full h-full"
+                               onError={(e) => {
+                                 (e.target as HTMLElement).style.display = 'none';
+                               }}
+                             />
+                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-0">
+                                <User className="w-6 h-6 text-white/20" />
+                             </div>
+                          </div>
+                          <p className="text-[8px] font-black uppercase tracking-wider truncate">{asset.id}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {selectedAssetId && (
+                      <div className="p-6 border border-primary/20 bg-primary/5 space-y-6 animate-in fade-in slide-in-from-top-4 duration-300">
+                        <div className="flex justify-between items-center">
+                          <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary flex items-center gap-2">
+                            <Upload className="w-3.5 h-3.5" /> Upload Replacement for: <code className="text-white bg-black/60 px-2 py-0.5">{selectedAssetId}.png</code>
+                          </h4>
+                          <Button variant="ghost" size="sm" onClick={() => setSelectedAssetId(null)} className="h-6 text-[8px] uppercase font-bold tracking-widest">Cancel</Button>
+                        </div>
+                        
+                        <div className="flex flex-col items-center justify-center p-8 border border-dashed border-primary/20 bg-black/40 relative group cursor-pointer">
+                          <input 
+                            type="file" 
+                            accept="image/*" 
+                            className="absolute inset-0 opacity-0 cursor-pointer z-20"
+                            onChange={handleAssetChange}
+                          />
+                          {assetPreview ? (
+                            <img src={assetPreview} alt="Preview" className="h-28 w-auto object-contain mb-3" />
+                          ) : (
+                            <Upload className="w-8 h-8 text-primary opacity-40 mb-3" />
+                          )}
+                          <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">
+                            {assetFile ? assetFile.name : `Select high-resolution media for ${selectedAssetId}`}
+                          </p>
+                        </div>
+
+                        <Button 
+                          onClick={uploadAsset} 
+                          disabled={!assetFile || uploadingAsset}
+                          className="w-full h-11 bg-primary text-black font-black uppercase tracking-widest premium-cta"
+                        >
+                          {uploadingAsset ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <ShieldCheck className="w-4 h-4 mr-2" />}
+                          Sync {selectedAssetId} Media Asset
+                        </Button>
+                      </div>
+                    )}
+                  </TabsContent>
+
+                  {/* TAB 3: CUSTOM FILE UPLOADER */}
+                  <TabsContent value="custom" className="mt-6 space-y-6">
+                    <Card className="glass-card border-white/10 p-6 md:p-8 space-y-6">
+                      <div>
+                        <h4 className="text-sm font-bold uppercase tracking-tight text-white flex items-center gap-2">
+                          <Upload className="w-4 h-4 text-primary" /> Upload Arbitrary Asset to Supabase Storage
+                        </h4>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">
+                          Upload any custom image, report graphic, badge, or document to the public <code className="text-primary font-bold">assets</code> bucket.
                         </p>
                       </div>
 
-                      <Button 
-                        onClick={uploadAsset} 
-                        disabled={!assetFile || uploadingAsset}
-                        className="w-full h-12 bg-primary text-black font-black uppercase tracking-widest premium-cta"
-                      >
-                        {uploadingAsset ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <ShieldCheck className="w-4 h-4 mr-2" />}
-                        Sync Media Asset
-                      </Button>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <div className="space-y-2">
+                            <Label className="text-[9px] uppercase tracking-widest">Target Storage Filename</Label>
+                            <Input 
+                              placeholder="e.g. proof-audit-report.png" 
+                              className="bg-black/50 border-white/10"
+                              value={customName}
+                              onChange={(e) => setCustomName(e.target.value)}
+                            />
+                            <p className="text-[8px] text-muted-foreground uppercase tracking-wider">
+                              Will be stored in Supabase as: <code>{customName.trim() || 'filename.png'}</code>
+                            </p>
+                          </div>
+
+                          <div className="p-4 bg-white/5 border border-white/5 space-y-2">
+                            <p className="text-[9px] font-black uppercase tracking-widest text-primary flex items-center gap-1.5">
+                              <Info className="w-3.5 h-3.5" /> Automatic Broadcasting
+                            </p>
+                            <p className="text-[8px] text-muted-foreground uppercase tracking-widest leading-relaxed">
+                              Whenever an asset is uploaded, the website automatically broadcasts a cache-busting notification to ensure instant presentation without redeploying.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <div className="flex flex-col items-center justify-center p-8 border border-dashed border-white/10 bg-black/40 relative group cursor-pointer min-h-[160px]">
+                            <input 
+                              type="file" 
+                              accept="image/*,.pdf,.svg" 
+                              className="absolute inset-0 opacity-0 cursor-pointer z-20"
+                              onChange={handleCustomChange}
+                            />
+                            {customPreview ? (
+                              <img src={customPreview} alt="Preview" className="h-24 w-auto object-contain mb-3" />
+                            ) : (
+                              <Upload className="w-8 h-8 text-muted-foreground opacity-30 mb-3" />
+                            )}
+                            <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground text-center">
+                              {customFile ? customFile.name : 'Select or drop any file here'}
+                            </p>
+                          </div>
+
+                          <Button 
+                            onClick={uploadCustomAsset} 
+                            disabled={!customFile || !customName.trim() || uploadingCustom}
+                            className="w-full h-11 bg-primary text-black font-black uppercase tracking-widest premium-cta"
+                          >
+                            {uploadingCustom ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Upload className="w-4 h-4 mr-2" />}
+                            Upload & Synchronize Asset
+                          </Button>
+                        </div>
+                      </div>
+                    </Card>
+                  </TabsContent>
+
+                  {/* TAB 4: SUPABASE STORAGE EXPLORER */}
+                  <TabsContent value="explorer" className="mt-6 space-y-6">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-4">
+                      <div className="flex items-center gap-3">
+                        <Input 
+                          placeholder="Filter assets by name..." 
+                          className="bg-black/50 border-white/10 w-64 h-9 text-xs"
+                          value={assetSearchQuery}
+                          onChange={(e) => setAssetSearchQuery(e.target.value)}
+                        />
+                        <Button 
+                          onClick={loadStorageAssets} 
+                          variant="outline" 
+                          size="sm" 
+                          className="border-white/10 bg-white/5 h-9 uppercase text-[9px] font-black tracking-widest"
+                          disabled={loadingAssets}
+                        >
+                          <RefreshCw className={cn("w-3.5 h-3.5 mr-1.5", loadingAssets && "animate-spin")} />
+                          Refresh List
+                        </Button>
+                      </div>
+                      <Badge variant="outline" className="text-[9px] uppercase tracking-widest border-primary/20 text-primary">
+                        {storageAssets.length} Total Files in Bucket
+                      </Badge>
                     </div>
-                  )}
-                </div>
+
+                    {loadingAssets ? (
+                      <div className="py-16 text-center space-y-4">
+                        <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+                          Querying Supabase Storage API...
+                        </p>
+                      </div>
+                    ) : storageAssets.length === 0 ? (
+                      <div className="py-16 text-center space-y-4 border border-dashed border-white/10">
+                        <Database className="w-10 h-10 text-muted-foreground/30 mx-auto" />
+                        <p className="text-xs uppercase font-bold text-white tracking-widest">No assets found in Supabase 'assets' bucket</p>
+                        <p className="text-[9px] text-muted-foreground uppercase tracking-widest max-w-md mx-auto">
+                          Upload your logo or brand assets from the Core Brand or Custom Uploader tabs to populate the live bucket.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[550px] overflow-y-auto pr-1">
+                        {storageAssets
+                          .filter(a => a.name.toLowerCase().includes(assetSearchQuery.toLowerCase()))
+                          .map((asset) => (
+                            <div 
+                              key={asset.name} 
+                              className="p-3 border border-white/5 bg-white/5 hover:border-primary/30 transition-all flex flex-col justify-between space-y-3 group"
+                            >
+                              <div className="aspect-video bg-black/50 relative overflow-hidden flex items-center justify-center">
+                                <img 
+                                  src={asset.publicUrl} 
+                                  alt={asset.name} 
+                                  className="w-full h-full object-contain"
+                                  onError={(e) => {
+                                    (e.target as HTMLElement).style.display = 'none';
+                                  }}
+                                />
+                                <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-0">
+                                  <ImageIcon className="w-6 h-6 text-white/10" />
+                                </div>
+                              </div>
+
+                              <div>
+                                <p className="text-[10px] font-bold text-white truncate" title={asset.name}>
+                                  {asset.name}
+                                </p>
+                                <div className="flex justify-between items-center text-[8px] text-muted-foreground uppercase tracking-wider mt-1">
+                                  <span>{formatFileSize(asset.metadata?.size)}</span>
+                                  {asset.updated_at && (
+                                    <span>{new Date(asset.updated_at).toLocaleDateString()}</span>
+                                  )}
+                                </div>
+                              </div>
+
+                              <div className="flex items-center gap-1.5 pt-2 border-t border-white/5">
+                                <Button 
+                                  onClick={() => handleCopyUrl(asset.publicUrl)}
+                                  variant="ghost" 
+                                  size="sm" 
+                                  className="flex-1 h-7 text-[8px] font-black uppercase tracking-widest bg-white/5 hover:bg-primary hover:text-black"
+                                >
+                                  {copiedUrl === asset.publicUrl ? (
+                                    <>
+                                      <Check className="w-3 h-3 mr-1 text-green-400" /> Copied
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Copy className="w-3 h-3 mr-1" /> Copy URL
+                                    </>
+                                  )}
+                                </Button>
+                                <a 
+                                  href={asset.publicUrl} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="h-7 w-7 inline-flex items-center justify-center rounded bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-white"
+                                  title="Open in new tab"
+                                >
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                                <Button 
+                                  onClick={() => handleDeleteStorageAsset(asset.name)}
+                                  variant="ghost" 
+                                  size="icon" 
+                                  className="h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                                  title="Delete asset"
+                                >
+                                  <Trash2 className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </TabsContent>
+                </Tabs>
               </DialogContent>
             </Dialog>
 

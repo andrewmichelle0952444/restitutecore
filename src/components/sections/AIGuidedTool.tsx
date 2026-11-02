@@ -42,7 +42,7 @@ export function AIGuidedTool() {
     }
     
     setLoading(true)
-    const generatedId = `LRX-${Math.floor(10000 + Math.random() * 90000)}`
+    const generatedId = `RST-${Math.floor(10000 + Math.random() * 90000)}`
     setCaseId(generatedId)
 
     try {
@@ -56,7 +56,7 @@ NARRATIVE: ${description}
 
       await supabase.from('cases').insert([{
         case_id: generatedId,
-        case_type: 'Forensic Intake',
+        case_type: 'Scam Assessment Intake',
         user_name: bookingValues.name,
         user_email: bookingValues.email,
         user_phone: bookingValues.phone,
@@ -79,18 +79,20 @@ NARRATIVE: ${description}
   }
 
   return (
-    <section id="forensic-intake" className="py-24 bg-card/30 border-y border-white/5 relative overflow-hidden">
-      <div className="container mx-auto px-6 max-w-4xl">
+    <section id="case-assessment" className="py-20 bg-card/25 border-y border-white/[0.06] relative overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6 max-w-4xl">
         {step === 'form' && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/20 text-primary text-[10px] font-black mb-6 tracking-[0.3em] uppercase">
-                <Shield className="w-3.5 h-3.5" />
-                Case Portal
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold mb-4 tracking-[0.25em] uppercase">
+                <Shield className="w-3.5 h-3.5 text-primary" />
+                Confidential Case Review
               </div>
-              <h2 className="text-4xl md:text-5xl font-headline font-bold mb-6 uppercase tracking-tighter">Get Free Consultation</h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Submit your case narrative for structured review. Our senior analysts provide human-led investigation on all verified intakes.
+              <h2 className="text-3xl md:text-5xl font-headline font-semibold mb-4 tracking-tight text-[#F5F0E7]">
+                Request a Case Assessment
+              </h2>
+              <p className="text-muted-foreground text-base max-w-2xl mx-auto leading-relaxed">
+                Provide the details of the financial or crypto scam you experienced. Our analysts examine the transaction trail and outline actionable options.
               </p>
             </div>
 
@@ -153,15 +155,15 @@ NARRATIVE: ${description}
                   <Button 
                     onClick={handleFinalSubmit} 
                     disabled={loading}
-                    className="w-full h-20 text-lg font-black uppercase tracking-[0.3em] bg-primary text-black premium-cta rounded-none"
+                    className="w-full h-14 text-xs font-bold uppercase tracking-wider bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm shadow-md transition-all"
                   >
                     {loading ? (
                       <div className="flex items-center gap-3">
-                        <Loader2 className="w-6 h-6 animate-spin" />
-                        <span className="text-sm">Submitting...</span>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <span className="text-xs">Analyzing Incident Parameters...</span>
                       </div>
                     ) : (
-                      <>Submit Case for Recovery <ArrowRight className="ml-2 w-6 h-6" /></>
+                      <>Request a Case Assessment <ArrowRight className="ml-2 w-4 h-4" /></>
                     )}
                   </Button>
                 </div>
@@ -186,7 +188,7 @@ NARRATIVE: ${description}
                   If you already have documentation or would rather explain your situation privately, you can contact our investigation team directly by email.
                 </p>
                 <a 
-                  href="mailto:investigator@lazoronix.com" 
+                  href="mailto:investigator@restiturecore.com" 
                   className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-primary hover:gold-glow transition-all"
                 >
                   Email Our Investigation Team <ArrowRight className="w-4 h-4" />

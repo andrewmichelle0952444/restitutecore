@@ -1,4 +1,4 @@
-# **App Name**: Lazoronix Recovery
+# **App Name**: Restiturecore Recovery
 
 ## Core Features:
 

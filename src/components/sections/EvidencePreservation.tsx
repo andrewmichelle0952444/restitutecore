@@ -83,7 +83,7 @@ export function EvidencePreservation() {
                   </Link>
                   <div className="pt-4 border-t border-white/5">
                     <p className="text-[9px] text-muted-foreground uppercase font-black mb-2 tracking-widest">Prefer Direct Submission?</p>
-                    <a href="mailto:investigator@lazoronix.com" className="flex items-center gap-2 text-[10px] text-primary font-bold uppercase tracking-widest hover:underline">
+                    <a href="mailto:investigator@restiturecore.com" className="flex items-center gap-2 text-[10px] text-primary font-bold uppercase tracking-widest hover:underline">
                       <Mail className="w-3.5 h-3.5" /> Email Our Team
                     </a>
                   </div>
@@ -144,7 +144,7 @@ export function EvidencePreservation() {
             If you already have a prepared evidence folder or transaction reports, you can bypass the intake portal and reach our investigation team directly.
           </p>
           <a 
-            href="mailto:investigator@lazoronix.com" 
+            href="mailto:investigator@restiturecore.com" 
             className="inline-flex items-center gap-2 text-[12px] font-black uppercase tracking-[0.3em] text-primary bg-primary/10 px-8 py-4 border border-primary/20 hover:bg-primary hover:text-black transition-all premium-cta"
           >
             Email Our Investigation Team <ArrowRight className="w-4 h-4 ml-2" />

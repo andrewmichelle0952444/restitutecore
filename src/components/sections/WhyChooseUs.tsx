@@ -45,7 +45,7 @@ export function WhyChooseUs() {
         <div className="max-w-4xl mx-auto mb-24">
           <SectionReveal>
             <h2 className="text-[10px] font-black uppercase tracking-[0.5em] text-primary mb-4">Institutional Credibility</h2>
-            <h3 className="text-4xl md:text-6xl font-headline font-bold mb-8 text-white uppercase tracking-tighter">Why Clients Choose Lazoronix</h3>
+            <h3 className="text-4xl md:text-6xl font-headline font-bold mb-8 text-white uppercase tracking-tighter">Why Clients Choose Restiturecore</h3>
             <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed font-medium">
               Our firm bridges the gap between digital asset complexity and professional investigative rigor, providing structured pathways to case resolution.
             </p>

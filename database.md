@@ -1,7 +1,7 @@
 
-# Lazoronix Forensic Database Schema
+# Restiturecore Forensic Database Schema
 
-This document outlines the database structure and Row Level Security (RLS) policies required for the Lazoronix Digital Asset Recovery platform.
+This document outlines the database structure and Row Level Security (RLS) policies required for the Restiturecore Digital Asset Recovery platform.
 
 ## SQL Setup (Run this in Supabase SQL Editor)
 
