@@ -217,14 +217,27 @@ export default function AdminDashboard() {
   const { toast } = useToast();
 
   useEffect(() => {
-    checkAuth();
-    fetchCases();
-    fetchStories();
+    initDashboard();
     fetchLogo();
     fetchHeroBg();
     fetchSeal();
     fetchOg();
   }, []);
+
+  /**
+   * Initialise dashboard: verify auth first, then fetch data with the
+   * authenticated session so Supabase RLS (TO authenticated) policies are met.
+   */
+  const initDashboard = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      router.push('/admin/login');
+      return;
+    }
+    // Session confirmed — RLS-protected SELECT will now succeed
+    fetchCases();
+    fetchStories();
+  };
 
   const checkAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession();

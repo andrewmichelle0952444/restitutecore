@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import Link from 'next/link';
 import { 
   CheckCircle2, 
   TrendingUp, 
@@ -15,10 +16,12 @@ import {
   Loader2, 
   Briefcase,
   Target,
-  ChevronDown
+  ChevronDown,
+  ArrowRight
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { supabase } from '@/lib/supabase';
 import { SectionReveal } from '@/components/ui/section-reveal';
 import { cn } from '@/lib/utils';
@@ -388,6 +391,23 @@ export function SuccessStories() {
              </p>
            </SectionReveal>
         </div>
+
+        {/* CTA */}
+        <SectionReveal className="mt-16 flex flex-col items-center gap-6 text-center">
+          <div className="max-w-2xl">
+            <h3 className="text-2xl md:text-3xl font-headline font-semibold text-[#F5F0E7] mb-3 tracking-tight">
+              Ready to Understand Your Recovery Options?
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Submit your case details confidentially. Our forensic analysts review the available digital trail and outline your realistic next steps — no pressure, no guarantees.
+            </p>
+          </div>
+          <Link href="/#case-assessment">
+            <Button size="lg" className="h-13 px-8 text-xs font-bold uppercase tracking-wider bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm shadow-md transition-all">
+              Request a Case Assessment <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+          </Link>
+        </SectionReveal>
       </div>
     </section>
   );

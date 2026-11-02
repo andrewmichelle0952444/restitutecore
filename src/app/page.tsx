@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -402,6 +402,18 @@ export default function Home() {
               </SectionReveal>
             ))}
           </div>
+
+          {/* CTA for Approach section */}
+          <SectionReveal className="text-center mt-14">
+            <p className="text-sm text-muted-foreground mb-5 max-w-xl mx-auto leading-relaxed">
+              Ready to put this investigative rigour to work on your case? Submit your details for a confidential, pressure-free assessment.
+            </p>
+            <Link href="#case-assessment">
+              <Button size="lg" className="h-13 px-8 text-xs font-bold uppercase tracking-wider bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm shadow-md transition-all">
+                Request a Case Assessment <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+          </SectionReveal>
         </div>
       </section>
 
@@ -465,6 +477,15 @@ export default function Home() {
           <div className="max-w-6xl mx-auto">
             <SuccessStories />
           </div>
+
+          {/* CTA for Why-Us section */}
+          <SectionReveal className="text-center mt-14">
+            <Link href="#case-assessment">
+              <Button size="lg" className="h-13 px-8 text-xs font-bold uppercase tracking-wider bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm shadow-md transition-all">
+                Request a Confidential Case Assessment <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+          </SectionReveal>
         </div>
       </section>
 

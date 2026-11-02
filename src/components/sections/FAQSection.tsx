@@ -5,7 +5,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { SectionReveal } from "@/components/ui/section-reveal";
-import { ShieldCheck, Search, Wallet, AlertCircle, FileText } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { ShieldCheck, Search, Wallet, AlertCircle, FileText, ArrowRight } from 'lucide-react';
 
 const knowledgeCategories = [
   {
@@ -95,6 +97,31 @@ export function FAQSection() {
              <FileText className="w-3.5 h-3.5 text-primary" /> Formal investigative reports are provided upon completion of lifecycle Phase 04.
            </p>
         </div>
+
+        {/* CTA */}
+        <SectionReveal className="mt-14 p-8 md:p-10 rounded-sm bg-card border border-primary/20 text-center space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold tracking-[0.25em] uppercase">
+            Start Your Confidential Review
+          </div>
+          <h3 className="text-2xl md:text-3xl font-headline font-semibold text-[#F5F0E7] tracking-tight">
+            Have Questions About Your Specific Case?
+          </h3>
+          <p className="text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
+            Submit your case details for a private, obligation-free evaluation. Our forensic analysts will review the available evidence and outline whether a viable recovery pathway exists.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <Link href="/#case-assessment">
+              <Button size="lg" className="h-12 px-8 text-xs font-bold uppercase tracking-wider bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm transition-all">
+                Request a Case Assessment <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+            <a href="mailto:investigator@restiturecore.com">
+              <Button size="lg" variant="outline" className="h-12 px-8 text-xs font-bold uppercase tracking-wider border-white/10 hover:border-primary/40 rounded-sm text-[#F5F0E7] transition-all">
+                Email Our Team Directly
+              </Button>
+            </a>
+          </div>
+        </SectionReveal>
       </div>
     </section>
   );
