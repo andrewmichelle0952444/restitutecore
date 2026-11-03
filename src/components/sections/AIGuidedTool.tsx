@@ -54,7 +54,7 @@ COUNTRY: ${bookingValues.country}
 NARRATIVE: ${description}
       `.trim()
 
-      await supabase.from('cases').insert([{
+      const { data, error: insertError } = await supabase.from('cases').insert([{
         case_id: generatedId,
         case_type: 'Scam Assessment Intake',
         user_name: bookingValues.name,
@@ -64,15 +64,36 @@ NARRATIVE: ${description}
         description: description,
         status: 'Review Pending',
         risk_level: 'Initial Intake'
-      }]);
+      }]).select();
 
-      aiGuidedRecoveryPreparation({ initialProblemDescription: promptText }).then(aiOutput => {
-         supabase.from('cases').update({ result_data: aiOutput }).eq('case_id', generatedId);
+      if (insertError) {
+        console.error("Supabase insert error:", insertError);
+        throw new Error(insertError.message || "Failed to register case in Supabase database");
+      }
+
+      // Background AI evaluation
+      aiGuidedRecoveryPreparation({ initialProblemDescription: promptText }).then(async (aiOutput) => {
+         const { error: updateError } = await supabase
+           .from('cases')
+           .update({ result_data: aiOutput })
+           .eq('case_id', generatedId);
+         if (updateError) {
+           console.warn("AI result update warning:", updateError.message);
+         }
       }).catch(err => console.error("Background AI processing error:", err));
 
       setStep('result')
+      toast({
+        title: "Assessment Successfully Registered",
+        description: `Case Reference ${generatedId} has been synced with the database.`
+      });
     } catch (error: any) {
-      toast({ variant: 'destructive', title: "Transmission Error", description: error.message })
+      console.error("Submission failed:", error);
+      toast({ 
+        variant: 'destructive', 
+        title: "Submission Error", 
+        description: error.message || "An error occurred while registering the case." 
+      })
     } finally {
       setLoading(false)
     }

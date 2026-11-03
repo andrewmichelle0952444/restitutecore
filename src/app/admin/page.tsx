@@ -222,6 +222,29 @@ export default function AdminDashboard() {
     fetchHeroBg();
     fetchSeal();
     fetchOg();
+
+    // Subscribe to live Supabase database events so the dashboard auto-syncs
+    const channel = supabase
+      .channel('admin-cases-realtime')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'cases' },
+        (payload) => {
+          console.log('Realtime case event detected:', payload);
+          fetchCases();
+          if (payload.eventType === 'INSERT') {
+            toast({
+              title: "New Case Received",
+              description: `Case ${(payload.new as any)?.case_id || ''} from ${(payload.new as any)?.user_name || 'victim'} has arrived.`,
+            });
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   /**
@@ -310,7 +333,12 @@ export default function AdminDashboard() {
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('Error fetching cases:', error);
+      console.error('Error fetching cases from Supabase:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Database Sync Error',
+        description: error.message || 'Could not fetch cases from Supabase. Check RLS policies.',
+      });
     } else {
       setCases(data || []);
     }
