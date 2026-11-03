@@ -54,12 +54,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!service) {
     return {
-      title: 'Service Not Found | Restiturecore',
+      title: 'Service Not Found | Restitutecore',
       description: 'The requested scam recovery service could not be located.'
     };
   }
 
-  const canonicalUrl = `https://restiturecore.com/services/${service.slug}`;
+  const canonicalUrl = `https://restitutecore.com/services/${service.slug}`;
 
   return {
     title: service.seoTitle,
@@ -79,7 +79,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: service.seoTitle,
       description: service.metaDescription,
       url: canonicalUrl,
-      siteName: 'Restiturecore',
+      siteName: 'Restitutecore',
       locale: 'en_US',
       type: 'article',
     },
@@ -112,7 +112,7 @@ export default async function ServicePage({ params }: PageProps) {
 
   const category = SERVICE_CATEGORIES.find(c => c.id === service.category);
   const relatedServices = category?.services.filter(s => s.slug !== service.slug) || [];
-  const canonicalUrl = `https://restiturecore.com/services/${service.slug}`;
+  const canonicalUrl = `https://restitutecore.com/services/${service.slug}`;
 
   const getCategoryIcon = () => {
     switch (service.category) {
@@ -136,19 +136,19 @@ export default async function ServicePage({ params }: PageProps) {
             '@type': 'ListItem',
             'position': 1,
             'name': 'Home',
-            'item': 'https://restiturecore.com'
+            'item': 'https://restitutecore.com'
           },
           {
             '@type': 'ListItem',
             'position': 2,
             'name': 'Services',
-            'item': 'https://restiturecore.com/services'
+            'item': 'https://restitutecore.com/services'
           },
           {
             '@type': 'ListItem',
             'position': 3,
             'name': service.categoryLabel,
-            'item': `https://restiturecore.com/services#${service.category}`
+            'item': `https://restitutecore.com/services#${service.category}`
           },
           {
             '@type': 'ListItem',
@@ -166,9 +166,9 @@ export default async function ServicePage({ params }: PageProps) {
         'description': service.metaDescription,
         'provider': {
           '@type': 'Organization',
-          'name': 'Restiturecore',
-          'url': 'https://restiturecore.com',
-          'email': 'investigator@restiturecore.com'
+          'name': 'Restitutecore',
+          'url': 'https://restitutecore.com',
+          'email': 'investigator@restitutecore.com'
         },
         'areaServed': 'Worldwide',
         'hasOfferCatalog': {
@@ -713,7 +713,7 @@ export default async function ServicePage({ params }: PageProps) {
                       <span>256-Bit Encrypted Confidential Intake</span>
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      Direct Email: <a href="mailto:investigator@restiturecore.com" className="text-white hover:text-primary font-semibold">investigator@restiturecore.com</a>
+                      Direct Email: <a href="mailto:investigator@restitutecore.com" className="text-white hover:text-primary font-semibold">investigator@restitutecore.com</a>
                     </div>
                   </div>
                 </div>
@@ -793,8 +793,8 @@ export default async function ServicePage({ params }: PageProps) {
                   <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold mb-1">
                     Direct Case Officer Email
                   </p>
-                  <a href="mailto:investigator@restiturecore.com" className="text-xs font-bold text-white hover:text-primary transition-colors">
-                    investigator@restiturecore.com
+                  <a href="mailto:investigator@restitutecore.com" className="text-xs font-bold text-white hover:text-primary transition-colors">
+                    investigator@restitutecore.com
                   </a>
                 </div>
               </Card>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -27,7 +27,7 @@ const navLinks = [
   { href: "/services", label: "All Services" },
   { href: "/#process", label: "How It Works" },
   { href: "/#approach", label: "Our Approach" },
-  { href: "/#why-us", label: "Why Restiturecore" },
+  { href: "/#why-us", label: "Why Restitutecore" },
   { href: "/#resources", label: "Resources & FAQ" },
   { href: "/contact", label: "Contact" },
 ];
@@ -52,7 +52,7 @@ export function Navbar() {
             {logoUrl ? (
               <img 
                 src={logoUrl} 
-                alt="Restiturecore Logo" 
+                alt="Restitutecore Logo" 
                 className="w-full h-full object-contain"
                 onError={handleImageError}
               />
@@ -61,7 +61,7 @@ export function Navbar() {
             )}
           </div>
           <span className="text-lg md:text-xl font-headline font-semibold tracking-tight text-[#F5F0E7]">
-            RESTITURECORE<span className="text-primary font-serif">.</span>
+            Restitutecore<span className="text-primary font-serif">.</span>
           </span>
         </Link>
         
@@ -132,7 +132,7 @@ export function Navbar() {
             <SheetContent side="right" className="bg-card border-white/5 w-full sm:max-w-md p-0 overflow-y-auto">
               <SheetHeader className="p-6 border-b border-white/5 text-left">
                 <SheetTitle className="text-xl font-headline font-bold uppercase tracking-tight flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-primary" /> RESTITURECORE
+                  <Shield className="w-5 h-5 text-primary" /> Restitutecore
                 </SheetTitle>
               </SheetHeader>
               <div className="flex flex-col p-6 space-y-6">

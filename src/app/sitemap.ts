@@ -1,8 +1,8 @@
-import { MetadataRoute } from 'next';
+﻿import { MetadataRoute } from 'next';
 import { ALL_SERVICES } from '@/lib/services-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://restiturecore.com';
+  const baseUrl = 'https://Restitutecore.com';
 
   const staticPages = [
     {

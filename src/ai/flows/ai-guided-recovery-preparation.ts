@@ -1,4 +1,4 @@
-'use server';
+﻿'use server';
 /**
  * @fileOverview A clinical digital asset recovery intake engine focused on preliminary case findings.
  *
@@ -49,7 +49,7 @@ const aiGuidedRecoveryPreparationPrompt = ai.definePrompt({
   name: 'aiGuidedRecoveryPreparationPrompt',
   input: {schema: AIGuidedRecoveryPreparationInputSchema},
   output: {schema: AIGuidedRecoveryPreparationOutputSchema},
-  prompt: `You are an enterprise-grade digital forensic scanner for Restiturecore. 
+  prompt: `You are an enterprise-grade digital forensic scanner for Restitutecore. 
 
 Your task is to conduct an "Automated Case Intake Assessment" based on the user's data.
 

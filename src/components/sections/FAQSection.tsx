@@ -1,4 +1,4 @@
-import {
+﻿import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -20,7 +20,7 @@ const knowledgeCategories = [
       },
       {
         question: "What is a 'secondary recovery scam' and how do I avoid it?",
-        answer: "Secondary recovery scammers target victims of fraud, falsely claiming they can 'hack back' stolen crypto or demanding upfront 'clearance fees' and 'recovery taxes'. Restiturecore never makes guarantee claims, never claims to hack blockchains, and operates as a legally registered corporate entity providing verifiable investigative documentation."
+        answer: "Secondary recovery scammers target victims of fraud, falsely claiming they can 'hack back' stolen crypto or demanding upfront 'clearance fees' and 'recovery taxes'. Restitutecore never makes guarantee claims, never claims to hack blockchains, and operates as a legally registered corporate entity providing verifiable investigative documentation."
       }
     ]
   },
@@ -29,7 +29,7 @@ const knowledgeCategories = [
     icon: Search,
     questions: [
       {
-        question: "How does Restiturecore charge for services?",
+        question: "How does Restitutecore charge for services?",
         answer: "Our initial case assessment and preliminary feasibility review are confidential. If the preliminary findings indicate that a viable recovery or legal pathway exists, any further forensic analysis or formal evidentiary reporting is conducted under a transparent, agreed-upon scope without hidden fees."
       },
       {
@@ -47,8 +47,8 @@ const knowledgeCategories = [
         answer: "Key documentation includes transaction hashes (TXIDs), receiving wallet addresses, deposit receipts, bank transfer confirmation slips, broker domain URLs, and chat/email transcripts with the suspected entity."
       },
       {
-        question: "Does Restiturecore provide legal advice or law enforcement services?",
-        answer: "No. Restiturecore provides specialist digital forensic investigation, on-chain asset tracing, and court-admissible technical dossiers. We prepare evidence suitable for submission to banks, exchange compliance teams, law enforcement agencies, or your legal counsel."
+        question: "Does Restitutecore provide legal advice or law enforcement services?",
+        answer: "No. Restitutecore provides specialist digital forensic investigation, on-chain asset tracing, and court-admissible technical dossiers. We prepare evidence suitable for submission to banks, exchange compliance teams, law enforcement agencies, or your legal counsel."
       }
     ]
   }
@@ -115,7 +115,7 @@ export function FAQSection() {
                 Request a Case Assessment <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </Link>
-            <a href="mailto:investigator@restiturecore.com">
+            <a href="mailto:investigator@Restitutecore.com">
               <Button size="lg" variant="outline" className="h-12 px-8 text-xs font-bold uppercase tracking-wider border-white/10 hover:border-primary/40 rounded-sm text-[#F5F0E7] transition-all">
                 Email Our Team Directly
               </Button>

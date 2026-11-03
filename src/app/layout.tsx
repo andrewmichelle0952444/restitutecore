@@ -1,14 +1,14 @@
-import type {Metadata} from 'next';
+﻿import type {Metadata} from 'next';
 import Script from 'next/script';
 import './globals.css';
 import {Toaster} from '@/components/ui/toaster';
 import {MouseSpotlight} from '@/components/ui/mouse-spotlight';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://restiturecore.com'),
+  metadataBase: new URL('https://Restitutecore.com'),
   title: {
-    default: 'Scam Recovery Services | Restiturecore',
-    template: '%s | Restiturecore',
+    default: 'Scam Recovery Services | Restitutecore',
+    template: '%s | Restitutecore',
   },
   description: 'Explore scam recovery services for investment fraud, romance scams, bank transfers and cryptocurrency fraud. Request an assessment of your circumstances and available options.',
   keywords: [
@@ -24,19 +24,19 @@ export const metadata: Metadata = {
     'digital asset tracing'
   ],
   alternates: {
-    canonical: 'https://restiturecore.com',
+    canonical: 'https://Restitutecore.com',
   },
   openGraph: {
-    title: 'Scam Recovery Services | Restiturecore',
+    title: 'Scam Recovery Services | Restitutecore',
     description: 'Explore scam recovery services for investment fraud, romance scams, bank transfers and cryptocurrency fraud. Request an assessment of your circumstances and available options.',
-    url: 'https://restiturecore.com',
-    siteName: 'Restiturecore',
+    url: 'https://Restitutecore.com',
+    siteName: 'Restitutecore',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Scam Recovery Services | Restiturecore',
+    title: 'Scam Recovery Services | Restitutecore',
     description: 'Explore scam recovery services for investment fraud, romance scams, bank transfers and cryptocurrency fraud.',
   },
   robots: {

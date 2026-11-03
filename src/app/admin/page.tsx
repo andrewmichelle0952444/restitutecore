@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -739,7 +739,7 @@ export default function AdminDashboard() {
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label className="text-[8px] uppercase tracking-widest">Case Identifier</Label>
-                          <Input placeholder="LRX-00000" className="bg-black/50 border-white/10" value={storyForm.case_id} onChange={e => setStoryForm({...storyForm, case_id: e.target.value})} />
+                          <Input placeholder="RST-00000" className="bg-black/50 border-white/10" value={storyForm.case_id} onChange={e => setStoryForm({...storyForm, case_id: e.target.value})} />
                         </div>
                         <div className="space-y-2">
                           <Label className="text-[8px] uppercase tracking-widest">Division</Label>

@@ -209,7 +209,7 @@ NARRATIVE: ${description}
                   If you already have documentation or would rather explain your situation privately, you can contact our investigation team directly by email.
                 </p>
                 <a 
-                  href="mailto:investigator@restiturecore.com" 
+                  href="mailto:investigator@restitutecore.com" 
                   className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-primary hover:gold-glow transition-all"
                 >
                   Email Our Investigation Team <ArrowRight className="w-4 h-4" />

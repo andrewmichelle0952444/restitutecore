@@ -1,7 +1,7 @@
 
-# Restiturecore Forensic Database Schema
+# Restitutecore Forensic Database Schema
 
-This document outlines the database structure, table permissions, and Row Level Security (RLS) policies required for the Restiturecore Digital Asset Recovery platform.
+This document outlines the database structure, table permissions, and Row Level Security (RLS) policies required for the Restitutecore Digital Asset Recovery platform.
 
 ## SQL Setup (Run this in Supabase SQL Editor)
 

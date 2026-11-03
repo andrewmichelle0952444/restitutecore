@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+﻿import { Metadata } from 'next';
 import Link from 'next/link';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -18,16 +18,16 @@ import {
 import { SERVICE_CATEGORIES } from '@/lib/services-data';
 
 export const metadata: Metadata = {
-  title: 'Recovery Services Directory | Restiturecore',
+  title: 'Recovery Services Directory | Restitutecore',
   description: 'Explore scam recovery services for investment fraud, romance scams, bank transfers and cryptocurrency fraud across 3 specialist service families.',
   alternates: {
-    canonical: 'https://restiturecore.com/services',
+    canonical: 'https://Restitutecore.com/services',
   },
   openGraph: {
-    title: 'Recovery Services Directory | Restiturecore',
+    title: 'Recovery Services Directory | Restitutecore',
     description: 'Explore scam recovery services for investment fraud, romance scams, bank transfers and cryptocurrency fraud across 3 specialist service families.',
-    url: 'https://restiturecore.com/services',
-    siteName: 'Restiturecore',
+    url: 'https://Restitutecore.com/services',
+    siteName: 'Restitutecore',
     type: 'website',
   },
 };
@@ -61,7 +61,7 @@ export default function ServicesDirectoryPage() {
             Our Recovery Services
           </h1>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
-            Restiturecore provides specialized investigation and asset tracing across three distinct service families. Select the category matching your experience.
+            Restitutecore provides specialized investigation and asset tracing across three distinct service families. Select the category matching your experience.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             <span className="flex items-center gap-1.5"><Lock className="w-3.5 h-3.5 text-primary" /> Confidential Assessments</span>

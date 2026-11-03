@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+﻿import { Metadata } from 'next';
 import Link from 'next/link';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -19,16 +19,16 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Scam Recovery Resources & Educational Guides | Restiturecore',
-  description: 'Evidence preservation checklists, bank transfer recall guides, and secondary recovery scam warnings from Restiturecore fraud investigators.',
+  title: 'Scam Recovery Resources & Educational Guides | Restitutecore',
+  description: 'Evidence preservation checklists, bank transfer recall guides, and secondary recovery scam warnings from Restitutecore fraud investigators.',
   alternates: {
-    canonical: 'https://restiturecore.com/resources',
+    canonical: 'https://Restitutecore.com/resources',
   },
   openGraph: {
-    title: 'Scam Recovery Resources & Guides | Restiturecore',
+    title: 'Scam Recovery Resources & Guides | Restitutecore',
     description: 'Evidence preservation checklists, bank transfer recall guides, and secondary recovery scam warnings.',
-    url: 'https://restiturecore.com/resources',
-    siteName: 'Restiturecore',
+    url: 'https://Restitutecore.com/resources',
+    siteName: 'Restitutecore',
     type: 'website',
   },
 };
@@ -260,7 +260,7 @@ export default function ResourcesPage() {
             <div className="pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <p className="text-xs font-bold text-white uppercase tracking-wider">Want an Honest, Verifiable Case Evaluation?</p>
-                <p className="text-xs text-muted-foreground">Restiturecore operates with transparent evidence scoping and zero false guarantees.</p>
+                <p className="text-xs text-muted-foreground">Restitutecore operates with transparent evidence scoping and zero false guarantees.</p>
               </div>
               <Link href="/#case-assessment">
                 <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-xs uppercase tracking-wider h-10 px-5 rounded-sm">
