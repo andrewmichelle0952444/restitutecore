@@ -2,7 +2,7 @@
 import { ALL_SERVICES } from '@/lib/services-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://Restitutecore.com';
+  const baseUrl = 'https://restitutecore.com';
 
   const staticPages = [
     {

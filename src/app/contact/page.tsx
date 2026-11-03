@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -151,7 +151,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-1">Direct Case Officer</p>
-                        <p className="text-lg font-headline font-bold text-white group-hover:text-primary transition-colors break-all">investigator@Restitutecore.com</p>
+                        <p className="text-lg font-headline font-bold text-white group-hover:text-primary transition-colors break-all">investigator@restitutecore.com</p>
                         <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
                           For urgent case briefs, forensic attachments, or direct correspondence.
                         </p>

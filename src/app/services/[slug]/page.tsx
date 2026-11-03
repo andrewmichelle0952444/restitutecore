@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!service) {
     return {
-      title: 'Service Not Found | Restitutecore',
+      title: 'Service Not Found | RESTITUTECORE',
       description: 'The requested scam recovery service could not be located.'
     };
   }
@@ -79,7 +79,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: service.seoTitle,
       description: service.metaDescription,
       url: canonicalUrl,
-      siteName: 'Restitutecore',
+      siteName: 'RESTITUTECORE',
       locale: 'en_US',
       type: 'article',
     },
@@ -166,7 +166,7 @@ export default async function ServicePage({ params }: PageProps) {
         'description': service.metaDescription,
         'provider': {
           '@type': 'Organization',
-          'name': 'Restitutecore',
+          'name': 'RESTITUTECORE',
           'url': 'https://restitutecore.com',
           'email': 'investigator@restitutecore.com'
         },

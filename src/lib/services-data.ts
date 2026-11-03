@@ -95,10 +95,10 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         slug: 'investment-scam-recovery',
         title: 'Investment Scam Recovery',
         shortTitle: 'Investment Scams',
-        seoTitle: 'Investment Scam Recovery | Restitutecore',
+        seoTitle: 'Investment Scam Recovery | RESTITUTECORE',
         primaryKeyword: 'investment scam recovery',
         metaDescription: 'Lost money to an unregulated broker, clone firm or fake trading platform? Learn how investment scam recovery works, the evidence required, and realistic next steps.',
-        pageIntroduction: 'If you have lost capital to an unregulated broker, cloned asset management firm, or fictitious trading dashboard, understanding how investment scam recovery operates is essential. Restitutecore evaluates your transaction records, identifies merchant and banking endpoints, and assesses realistic next steps without false guarantees.',
+        pageIntroduction: 'If you have lost capital to an unregulated broker, cloned asset management firm, or fictitious trading dashboard, understanding how investment scam recovery operates is essential. RESTITUTECORE evaluates your transaction records, identifies merchant and banking endpoints, and assesses realistic next steps without false guarantees.',
         category: 'financial-relationship',
         categoryLabel: 'Financial & Relationship Scams',
         subtitle: 'Unregulated offshore brokers, cloned asset managers, and fictitious yield platforms.',
@@ -190,7 +190,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         slug: 'romance-scam-recovery',
         title: 'Romance Scam Recovery',
         shortTitle: 'Romance Scams',
-        seoTitle: 'Romance Scam Recovery | Restitutecore',
+        seoTitle: 'Romance Scam Recovery | RESTITUTECORE',
         primaryKeyword: 'romance scam recovery',
         metaDescription: 'Been deceived by an online relationship and lost money? Understand the evidence that may help assess your case and the possible next steps.',
         pageIntroduction: 'Been deceived by an online relationship and lost money? Romance scam recovery requires decoupling the emotional narrative from the physical digital paper trail. Learn what evidence may help assess your case, how financial endpoints are identified, and the realistic options available.',
@@ -279,7 +279,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         slug: 'bank-transfer-and-app-scam-recovery',
         title: 'Bank Transfer & APP Scam Recovery',
         shortTitle: 'Bank Transfer & APP Scams',
-        seoTitle: 'Bank Transfer & APP Scam Recovery | Restitutecore',
+        seoTitle: 'Bank Transfer & APP Scam Recovery | RESTITUTECORE',
         primaryKeyword: 'bank transfer scam recovery',
         metaDescription: 'Sent money to a scammer by bank transfer? Learn about APP fraud, the records to preserve and the potential routes for reviewing your circumstances.',
         pageIntroduction: 'Sent money to a scammer by bank transfer? In Authorized Push Payment (APP) fraud, swift action and proper documentation are vital. Learn about APP fraud mechanics, the banking records to preserve, and the potential regulatory and dispute routes for reviewing your circumstances.',
@@ -368,7 +368,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         slug: 'loan-scam-recovery',
         title: 'Loan Scam Recovery',
         shortTitle: 'Loan Scams',
-        seoTitle: 'Loan Scam Recovery | Restitutecore',
+        seoTitle: 'Loan Scam Recovery | RESTITUTECORE',
         primaryKeyword: 'loan scam recovery',
         metaDescription: 'Paid advance fees, insurance, or collateral for a fake loan offer? Understand corporate lender verification, payment trail audits, and banking recall processes.',
         pageIntroduction: 'Paid upfront fees, insurance premiums, or collateral for an approved loan that never arrived? Our loan scam recovery evaluations review lender corporate legitimacy, trace payment intermediary accounts, and document the transaction trail for formal recall and regulatory action.',
@@ -451,7 +451,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         slug: 'crypto-scam-recovery',
         title: 'Specialist Crypto Scam Recovery',
         shortTitle: 'Crypto Scams (Parent Pillar)',
-        seoTitle: 'Crypto Scam Recovery | Restitutecore',
+        seoTitle: 'Crypto Scam Recovery | RESTITUTECORE',
         primaryKeyword: 'crypto scam recovery',
         metaDescription: 'Lost cryptocurrency to fraudulent schemes or unauthorized transfers? Explore how blockchain tracing, exchange attribution, and evidence packaging support case assessments.',
         pageIntroduction: 'Lost cryptocurrency to fraudulent schemes, deceptive platforms, or unauthorized transfers? Crypto scam recovery serves as our central pillar for digital asset investigations. We employ on-chain forensics to trace stolen assets across blockchains and identify cash-out nodes at regulated centralized exchanges where freezing notices can be served.',
@@ -464,7 +464,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
           'How does blockchain forensic tracing locate stolen cryptocurrency across mixers and bridges?',
           'How do regulated centralized exchanges cooperate with freezing requests and subpoenas?',
           'What is the critical difference between on-chain tracing and legal asset recovery?',
-          'Which specialist Restitutecore crypto desk matches the specific mechanics of your loss?'
+          'Which specialist RESTITUTECORE crypto desk matches the specific mechanics of your loss?'
         ],
         summary: 'End-to-end blockchain tracing to locate stolen cryptocurrency across decentralized protocols, mixers, and centralized exchange cash-out nodes.',
         overview: 'Decentralized cryptocurrency transactions are immutable—no private investigator or company has the technical ability to reverse a confirmed blockchain transaction. However, public ledgers provide an unbroken record. Through advanced cluster heuristics and cross-chain tracking, we trace the flow of stolen assets until they reach regulated Virtual Asset Service Providers (VASPs).',
@@ -474,7 +474,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
           'Smart contract signatures requesting unlimited token approvals or blind "Permit" authorization',
           'Unregulated exchanges refusing withdrawals and demanding "VIP security upgrades" to release account balances'
         ],
-        scamDistinctionText: 'As Restitutecore\'s parent cryptocurrency pillar, this desk provides broad blockchain intelligence across all digital asset fraud types. It focuses on cryptographic transaction tracing, cluster attribution, and bridge traversal to identify regulated virtual asset off-ramps, serving as the foundational investigative framework for our specialist crypto desks.',
+        scamDistinctionText: 'As RESTITUTECORE\'s parent cryptocurrency pillar, this desk provides broad blockchain intelligence across all digital asset fraud types. It focuses on cryptographic transaction tracing, cluster attribution, and bridge traversal to identify regulated virtual asset off-ramps, serving as the foundational investigative framework for our specialist crypto desks.',
         isParentPillar: true,
         specialistLinks: [
           {
@@ -566,7 +566,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
           },
           {
             question: 'What is a secondary crypto recovery scam?',
-            answer: 'Scammers frequently target previous fraud victims, claiming they have "hacked back" the stolen funds or found the coins in a recovery pool, demanding upfront taxes or fees. Restitutecore warns clients never to pay fees to unverified recovery agents.'
+            answer: 'Scammers frequently target previous fraud victims, claiming they have "hacked back" the stolen funds or found the coins in a recovery pool, demanding upfront taxes or fees. RESTITUTECORE warns clients never to pay fees to unverified recovery agents.'
           },
           {
             question: 'What are TXIDs and why are they required?',
@@ -578,7 +578,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         slug: 'crypto-investment-scam-recovery',
         title: 'Crypto Investment Scam Recovery',
         shortTitle: 'Crypto Investment Scams',
-        seoTitle: 'Crypto Investment Scam Recovery | Restitutecore',
+        seoTitle: 'Crypto Investment Scam Recovery | RESTITUTECORE',
         primaryKeyword: 'crypto investment scam recovery',
         metaDescription: 'Lost cryptocurrency through a fraudulent investment scheme? Learn how transaction analysis, evidence review and potential recovery options may apply to your case.',
         pageIntroduction: 'Lost cryptocurrency through a fraudulent investment scheme, fake liquidity mining pool, or counterfeit staking platform? Crypto Investment Scam Recovery focuses specifically on fake trading platforms, fabricated returns, investment dashboards, and cryptocurrency deposits made into fraudulent yield schemes.',
@@ -674,7 +674,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         slug: 'fake-crypto-exchange-scam-recovery',
         title: 'Fake Crypto Exchange Scam Recovery',
         shortTitle: 'Fake Crypto Exchanges',
-        seoTitle: 'Fake Crypto Exchange Scam Recovery | Restitutecore',
+        seoTitle: 'Fake Crypto Exchange Scam Recovery | RESTITUTECORE',
         primaryKeyword: 'fake crypto exchange scam recovery',
         metaDescription: 'Deposited funds into a cloned or fake crypto exchange demanding withdrawal fees? Discover how on-chain tracing and platform infrastructure audits evaluate your case.',
         pageIntroduction: 'Deposited funds into a fraudulent exchange platform masquerading as a legitimate marketplace? Fake Crypto Exchange Scam Recovery focuses specifically on fraudulent exchanges, withdrawal restrictions, fabricated account balances, and demands for additional clearance fees.',
@@ -764,7 +764,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         slug: 'crypto-phishing-scam-recovery',
         title: 'Crypto Phishing Scam Recovery',
         shortTitle: 'Crypto Phishing',
-        seoTitle: 'Crypto Phishing Scam Recovery | Restitutecore',
+        seoTitle: 'Crypto Phishing Scam Recovery | RESTITUTECORE',
         primaryKeyword: 'crypto phishing scam recovery',
         metaDescription: 'Wallet drained by a malicious smart contract, permit signature or phishing site? Understand wallet triage, signature audits, and cross-chain tracking options.',
         pageIntroduction: 'Had your cryptocurrency wallet drained after clicking a link or signing a prompt? Crypto Phishing Scam Recovery focuses on malicious links, fake wallet interfaces, compromised credentials, and unauthorized transactions executed through drainer contracts.',
@@ -854,7 +854,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         slug: 'crypto-pump-and-dump-scam-recovery',
         title: 'Crypto Pump and Dump Scam Recovery',
         shortTitle: 'Pump & Dump Schemes',
-        seoTitle: 'Crypto Pump and Dump Scam Recovery | Restitutecore',
+        seoTitle: 'Crypto Pump and Dump Scam Recovery | RESTITUTECORE',
         primaryKeyword: 'crypto pump and dump scam',
         metaDescription: 'Victim of a coordinated crypto pump and dump or developer rug pull? Discover how tokenomics audits and developer wallet de-anonymization support fraud investigations.',
         pageIntroduction: 'Suffered catastrophic losses in a coordinated crypto pump and dump scheme or developer liquidity rug pull? This specialist desk focuses on coordinated token manipulation, developer liquidity rug pulls, honeypot contracts, and insider wallet profit extraction.',
@@ -929,7 +929,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         slug: 'crypto-romance-scam-recovery',
         title: 'Crypto Romance Scam Recovery',
         shortTitle: 'Crypto Romance Scams',
-        seoTitle: 'Crypto Romance Scam Recovery | Restitutecore',
+        seoTitle: 'Crypto Romance Scam Recovery | RESTITUTECORE',
         primaryKeyword: 'crypto romance scam',
         metaDescription: 'Directed to purchase cryptocurrency by an online romantic connection? Learn how fiat on-ramp linkage, blockchain tracking, and syndicate evidence files work.',
         pageIntroduction: 'Convinced to purchase and transfer cryptocurrency by an online romantic partner or deceptive mentor? Crypto Romance Scam Recovery focuses on intimate social engineering combined with directed cryptocurrency transfers via legitimate exchange on-ramps.',
@@ -1010,7 +1010,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         slug: 'pig-butchering-crypto-scam-recovery',
         title: 'Pig Butchering Crypto Scam Recovery',
         shortTitle: 'Pig-Butchering (Sha Zhu Pan)',
-        seoTitle: 'Pig Butchering Scam Recovery | Restitutecore',
+        seoTitle: 'Pig Butchering Scam Recovery | RESTITUTECORE',
         primaryKeyword: 'pig butchering crypto scam',
         metaDescription: 'Targeted by a multi-stage pig butchering investment scam (Sha Zhu Pan)? Learn how international syndicate cluster tracking and law enforcement reporting dossiers assist victims.',
         pageIntroduction: 'Targeted by a multi-stage pig butchering scam (Sha Zhu Pan)? This specialist desk focuses specifically on prolonged trust-building, relationship or social engineering, fraudulent investment platforms, and escalating deposits organized by transnational syndicates.',
@@ -1022,7 +1022,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         intendedAudience: 'Victims of organized transnational fraud compounds who were systematically groomed over weeks or months, shown simulated trading profits on custom apps, and coerced into depositing large sums of capital.',
         keyQuestionsAnswered: [
           'How do industrial scam compound networks operate and where do intermediate mule wallets aggregate funds?',
-          'How do specialized cybercrime task forces (FBI IC3, US Secret Service, Europol) utilize Restitutecore forensic dossiers?',
+          'How do specialized cybercrime task forces (FBI IC3, US Secret Service, Europol) utilize RESTITUTECORE forensic dossiers?',
           'What are the critical steps to protect your remaining assets, credit, and personal identity after the syndicate strikes?',
           'Why do pig-butchering rings demand secondary "tax payments" or "anti-money laundering guarantees" when you try to withdraw?'
         ],
@@ -1109,7 +1109,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         slug: 'wallet-recovery',
         title: 'Self-Custody Wallet Access & Key Recovery',
         shortTitle: 'Wallet Access Recovery',
-        seoTitle: 'Crypto Wallet Recovery Services | Restitutecore',
+        seoTitle: 'Crypto Wallet Recovery Services | RESTITUTECORE',
         primaryKeyword: 'crypto wallet recovery',
         metaDescription: 'Locked out of your crypto wallet? Learn about password permutation recovery, corrupted keystore extraction, and realistic cryptographic limitations.',
         pageIntroduction: 'Unable to access your own self-custody cryptocurrency wallet due to a forgotten password, mistranscribed seed phrase word, or damaged keystore file? Our crypto wallet recovery services use dedicated offline permutation computing while upholding strict cryptographic realities and transparent feasibility boundaries.',
@@ -1138,7 +1138,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
           '12- or 24-word seed phrase where 1 or 2 words are illegible or fail BIP-39 checksum verification',
           'Physical storage drive degradation preventing standard filesystem read access'
         ],
-        scamDistinctionText: 'Wallet recovery is strictly a technical access service, completely distinct from fraud and theft investigations. In scam recovery, assets were unlawfully transferred to a third-party criminal wallet. In wallet access recovery, your assets remain safe and unspent on the blockchain, but access is blocked by forgotten cryptographic credentials. Restitutecore applies offline high-performance computing to recover credentials for lawful owners.',
+        scamDistinctionText: 'Wallet recovery is strictly a technical access service, completely distinct from fraud and theft investigations. In scam recovery, assets were unlawfully transferred to a third-party criminal wallet. In wallet access recovery, your assets remain safe and unspent on the blockchain, but access is blocked by forgotten cryptographic credentials. RESTITUTECORE applies offline high-performance computing to recover credentials for lawful owners.',
         investigationApproach: 'We utilize dedicated high-performance offline computing clusters running specialized permutation and dictionary analysis. We build customized password masks based on the owners recollections of patterns, characters, and dates. All decryption work is performed in air-gapped, isolated environments with strict cryptographic chain-of-custody protocols.',
         realisticPathways: [
           'Brute-force permutation when the client can provide probable password structures and known fragments',
@@ -1170,7 +1170,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
             anchorText: 'Explore Crypto Investment Scam Recovery'
           }
         ],
-        disclaimer: 'CRITICAL BOUNDARY & CRYPTOGRAPHIC LIMITATIONS: Modern cryptography (such as AES-256 or SHA-256) cannot be brute-forced without partial knowledge. Restitutecore cannot magically recover a completely lost 12- or 24-word seed phrase where no words or hints are known. We only handle cases where encrypted files exist or where partial seed phrase material is available with sufficient constraints. We will never ask you to send functional unencrypted private keys.',
+        disclaimer: 'CRITICAL BOUNDARY & CRYPTOGRAPHIC LIMITATIONS: Modern cryptography (such as AES-256 or SHA-256) cannot be brute-forced without partial knowledge. RESTITUTECORE cannot magically recover a completely lost 12- or 24-word seed phrase where no words or hints are known. We only handle cases where encrypted files exist or where partial seed phrase material is available with sufficient constraints. We will never ask you to send functional unencrypted private keys.',
         faqs: [
           {
             question: 'Can you recover a completely lost 12 or 24-word seed phrase with zero words known?',
@@ -1239,10 +1239,10 @@ export function getServiceBySlug(slug: string): ServiceItem | undefined {
   ];
 
   const costPrinciples = service.costPrinciples || 
-    'Restitutecore operates with transparent, scope-based fee principles. Following your confidential initial assessment, we provide an itemized breakdown of required investigative hours and deliverables before any formal engagement begins. We never charge surprise clearance fees, withdrawal taxes, or percentage commissions on theoretical recoveries.';
+    'RESTITUTECORE operates with transparent, scope-based fee principles. Following your confidential initial assessment, we provide an itemized breakdown of required investigative hours and deliverables before any formal engagement begins. We never charge surprise clearance fees, withdrawal taxes, or percentage commissions on theoretical recoveries.';
 
   const realisticExpectations = service.realisticExpectations ||
-    'Restitutecore does not make guaranteed recovery claims. Recovery is contingent on whether funds touched regulated financial institutions, whether anti-money laundering controls were violated, and whether legal orders can freeze assets before off-ramping.';
+    'RESTITUTECORE does not make guaranteed recovery claims. Recovery is contingent on whether funds touched regulated financial institutions, whether anti-money laundering controls were violated, and whether legal orders can freeze assets before off-ramping.';
 
   const outcomeFactors = service.outcomeFactors || [
     'Time elapsed between the fraudulent transfer and initiating formal investigation',

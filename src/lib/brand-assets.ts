@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 
 // Global custom event name for live asset synchronization across the website
-export const ASSET_SYNC_EVENT = 'Restitutecore-asset-synced';
+export const ASSET_SYNC_EVENT = 'restitutecore-asset-synced';
 
 export interface StorageAssetFile {
   name: string;

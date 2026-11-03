@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -417,7 +417,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 05: Why Restitutecore & What to Expect */}
+      {/* 05: Why RESTITUTECORE & What to Expect */}
       <section id="why-us" className="py-24 md:py-32 bg-card/20 relative overflow-hidden border-t border-white/[0.06]">
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <SectionReveal className="max-w-3xl mx-auto text-center mb-16 md:mb-20">
@@ -425,7 +425,7 @@ export default function Home() {
               Credibility & Standards
             </div>
             <h2 className="text-3xl md:text-5xl font-headline font-semibold mb-6 tracking-tight text-[#F5F0E7]">
-              Why Restitutecore & What to Expect
+              Why RESTITUTECORE & What to Expect
             </h2>
             <p className="text-muted-foreground text-base md:text-lg leading-relaxed font-normal">
               In an industry plagued by false promises and secondary recovery scammers, we stand apart through transparency, restraint, and verifiable investigation standards.
@@ -558,8 +558,8 @@ export default function Home() {
             <p className="text-xs md:text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed mb-6">
               If you have already prepared an evidence folder or wish to share sensitive communications privately, transmit your details directly to our senior analysts.
             </p>
-            <a href="mailto:investigator@Restitutecore.com" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary border border-primary/30 px-6 py-3 rounded-sm hover:bg-primary hover:text-primary-foreground transition-all">
-              <Mail className="w-4 h-4" /> investigator@Restitutecore.com
+            <a href="mailto:investigator@restitutecore.com" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary border border-primary/30 px-6 py-3 rounded-sm hover:bg-primary hover:text-primary-foreground transition-all">
+              <Mail className="w-4 h-4" /> investigator@restitutecore.com
             </a>
           </SectionReveal>
         </div>

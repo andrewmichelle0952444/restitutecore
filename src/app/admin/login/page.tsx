@@ -76,7 +76,7 @@ export default function AdminLoginPage() {
               <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Admin Email</Label>
               <Input
                 type="email"
-                placeholder="investigator@Restitutecore.com"
+                placeholder="investigator@restitutecore.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-background/50 border-white/10 rounded-none"

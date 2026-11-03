@@ -56,7 +56,7 @@ export function Hero() {
             </h1>
             
             <p className="text-base md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed font-normal px-4 md:px-0 text-balance">
-              Restitutecore provides scam recovery assistance, fraud investigation, and digital asset tracing to help individuals and businesses assess their options after financial fraud.
+              RESTITUTECORE provides scam recovery assistance, fraud investigation, and digital asset tracing to help individuals and businesses assess their options after financial fraud.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
