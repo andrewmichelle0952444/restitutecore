@@ -1,4 +1,5 @@
 import type {Metadata} from 'next';
+import Script from 'next/script';
 import './globals.css';
 import {Toaster} from '@/components/ui/toaster';
 import {MouseSpotlight} from '@/components/ui/mouse-spotlight';
@@ -101,6 +102,26 @@ export default function RootLayout({
         <MouseSpotlight />
         {children}
         <Toaster />
+        
+        {/* Start of Tawk.to Script */}
+        <Script
+          id="tawk-to"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+              (function(){
+              var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+              s1.async=true;
+              s1.src='https://embed.tawk.to/6ae9f649b915103c35e0c264/1k6guk469';
+              s1.charset='UTF-8';
+              s1.setAttribute('crossorigin','*');
+              s0.parentNode.insertBefore(s1,s0);
+              })();
+            `,
+          }}
+        />
+        {/* End of Tawk.to Script */}
       </body>
     </html>
   );
