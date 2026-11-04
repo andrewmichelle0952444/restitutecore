@@ -1,4 +1,4 @@
-﻿import {
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -54,74 +54,88 @@ const knowledgeCategories = [
   }
 ];
 
-export function FAQSection() {
+export function FAQSection({ hideWrapper = false }: { hideWrapper?: boolean } = {}) {
+  const content = (
+    <>
+      <SectionReveal className="text-center mb-16">
+        <h2 className="text-[10px] font-black uppercase tracking-[0.5em] text-primary mb-3">Investigative Resources</h2>
+        <h3 className="text-3xl md:text-5xl font-headline font-semibold mb-4 text-[#F5F0E7] tracking-tight">Recovery Knowledge Base</h3>
+        <p className="text-muted-foreground text-base max-w-2xl mx-auto leading-relaxed">
+          Transparent answers to common questions regarding technical methodologies, feasibility, and digital asset investigation standards.
+        </p>
+      </SectionReveal>
+      
+      <div className="grid lg:grid-cols-2 gap-8 md:gap-12">
+        {knowledgeCategories.map((category, catIdx) => (
+          <div key={catIdx} className="space-y-6">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-9 h-9 rounded-sm bg-primary/10 border border-primary/20 flex items-center justify-center">
+                <category.icon className="w-4 h-4 text-primary" />
+              </div>
+              <h4 className="text-lg font-headline font-semibold text-[#F5F0E7]">{category.title}</h4>
+            </div>
+            
+            <Accordion type="single" collapsible className="w-full space-y-3">
+              {category.questions.map((faq, idx) => (
+                <AccordionItem key={idx} value={`item-${catIdx}-${idx}`} className="border-white/10 bg-card/60 px-5 rounded-sm">
+                  <AccordionTrigger className="text-left text-xs md:text-sm font-semibold py-4 hover:no-underline hover:text-primary transition-colors tracking-wide text-[#F5F0E7]">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-xs leading-relaxed pb-5">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-12 pt-8 border-t border-white/5 text-center">
+         <p className="text-[11px] font-semibold text-muted-foreground flex items-center justify-center gap-2">
+           <FileText className="w-3.5 h-3.5 text-primary" /> Formal evidentiary dossiers and recovery packages are prepared under custom agreed scopes.
+         </p>
+      </div>
+
+      {/* CTA */}
+      <SectionReveal className="mt-12 p-8 md:p-10 rounded-sm bg-card border border-primary/20 text-center space-y-4 shadow-xl">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold tracking-[0.25em] uppercase">
+          Start Your Confidential Review
+        </div>
+        <h3 className="text-2xl md:text-3xl font-headline font-semibold text-[#F5F0E7] tracking-tight">
+          Have Questions About Your Specific Case?
+        </h3>
+        <p className="text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
+          Submit your case details for a private, obligation-free evaluation. Our forensic analysts will review the available evidence and outline whether a viable recovery pathway exists.
+        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <Link href="/#case-assessment">
+            <Button size="lg" className="h-12 px-8 text-xs font-bold uppercase tracking-wider bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm transition-all shadow-md shadow-primary/20">
+              Request a Case Assessment <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+          </Link>
+          <a href="mailto:investigator@restitutecore.com">
+            <Button size="lg" variant="outline" className="h-12 px-8 text-xs font-bold uppercase tracking-wider border-white/10 hover:border-primary/40 rounded-sm text-[#F5F0E7] transition-all">
+              Email Our Team Directly
+            </Button>
+          </a>
+        </div>
+      </SectionReveal>
+    </>
+  );
+
+  if (hideWrapper) {
+    return (
+      <div id="faq" className="max-w-5xl mx-auto relative z-10 pt-8">
+        {content}
+      </div>
+    );
+  }
+
   return (
     <section id="faq" className="py-24 bg-background relative overflow-hidden">
       <div className="container mx-auto px-6 max-w-5xl">
-        <SectionReveal className="text-center mb-20">
-          <h2 className="text-[10px] font-black uppercase tracking-[0.5em] text-primary mb-4">Investigative Resources</h2>
-          <h3 className="text-4xl md:text-5xl font-headline font-bold mb-6 uppercase tracking-tighter">Recovery Knowledge Base</h3>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-            A specialized resource for understanding the technical methodologies behind digital asset investigation and recovery.
-          </p>
-        </SectionReveal>
-        
-        <div className="grid lg:grid-cols-2 gap-12">
-          {knowledgeCategories.map((category, catIdx) => (
-            <div key={catIdx} className="space-y-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <category.icon className="w-5 h-5 text-primary" />
-                </div>
-                <h4 className="text-xl font-headline font-bold uppercase tracking-tight">{category.title}</h4>
-              </div>
-              
-              <Accordion type="single" collapsible className="w-full space-y-4">
-                {category.questions.map((faq, idx) => (
-                  <AccordionItem key={idx} value={`item-${catIdx}-${idx}`} className="border-white/5 bg-white/5 px-6 rounded-none">
-                    <AccordionTrigger className="text-left text-sm font-bold py-6 hover:no-underline hover:text-primary transition-colors uppercase tracking-widest">
-                      {faq.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground text-[11px] leading-relaxed pb-6 uppercase tracking-widest">
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-20 pt-12 border-t border-white/5 text-center">
-           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-center gap-2">
-             <FileText className="w-3.5 h-3.5 text-primary" /> Formal investigative reports are provided upon completion of lifecycle Phase 04.
-           </p>
-        </div>
-
-        {/* CTA */}
-        <SectionReveal className="mt-14 p-8 md:p-10 rounded-sm bg-card border border-primary/20 text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold tracking-[0.25em] uppercase">
-            Start Your Confidential Review
-          </div>
-          <h3 className="text-2xl md:text-3xl font-headline font-semibold text-[#F5F0E7] tracking-tight">
-            Have Questions About Your Specific Case?
-          </h3>
-          <p className="text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            Submit your case details for a private, obligation-free evaluation. Our forensic analysts will review the available evidence and outline whether a viable recovery pathway exists.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-            <Link href="/#case-assessment">
-              <Button size="lg" className="h-12 px-8 text-xs font-bold uppercase tracking-wider bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm transition-all">
-                Request a Case Assessment <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
-            <a href="mailto:investigator@restitutecore.com">
-              <Button size="lg" variant="outline" className="h-12 px-8 text-xs font-bold uppercase tracking-wider border-white/10 hover:border-primary/40 rounded-sm text-[#F5F0E7] transition-all">
-                Email Our Team Directly
-              </Button>
-            </a>
-          </div>
-        </SectionReveal>
+        {content}
       </div>
     </section>
   );

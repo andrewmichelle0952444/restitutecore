@@ -158,7 +158,7 @@ const DEFAULT_STORIES: Story[] = [
   }
 ];
 
-export function SuccessStories() {
+export function SuccessStories({ hideWrapper = false }: { hideWrapper?: boolean } = {}) {
   const [stories, setStories] = useState<Story[]>(DEFAULT_STORIES);
   const [loading, setLoading] = useState(true);
 
@@ -190,7 +190,7 @@ export function SuccessStories() {
   };
 
   return (
-    <section id="records" className="py-24 md:py-32 bg-background overflow-hidden border-t border-white/[0.06] relative">
+    <div id="records" className={hideWrapper ? "relative pt-8" : "py-24 md:py-32 bg-background overflow-hidden border-t border-white/[0.06] relative"}>
       {/* Intelligence Network Background */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.025] overflow-hidden">
         {/* Resolution Probability Wave (Radar Sweep) */}
@@ -409,6 +409,6 @@ export function SuccessStories() {
           </Link>
         </SectionReveal>
       </div>
-    </section>
+    </div>
   );
 }

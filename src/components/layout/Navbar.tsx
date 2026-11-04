@@ -24,9 +24,8 @@ import { useBrandAsset } from '@/lib/brand-assets';
 import { SERVICE_CATEGORIES } from '@/lib/services-data';
 
 const navLinks = [
-  { href: "/services", label: "All Services" },
+  { href: "/#services", label: "Services" },
   { href: "/#process", label: "How It Works" },
-  { href: "/#approach", label: "Our Approach" },
   { href: "/#why-us", label: "Why RESTITUTECORE" },
   { href: "/#resources", label: "Resources & FAQ" },
   { href: "/contact", label: "Contact" },
@@ -116,17 +115,18 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
-          <Button asChild className="hidden sm:flex bg-primary hover:bg-primary/90 text-primary-foreground font-bold uppercase tracking-wider h-9 md:h-10 px-4 md:px-5 rounded-sm text-xs">
+          <Button asChild className="flex bg-primary hover:bg-primary/90 text-primary-foreground font-bold uppercase tracking-wider h-9 md:h-10 px-3.5 md:px-5 rounded-sm text-[10px] md:text-xs shadow-md shadow-primary/20">
             <Link href="/#case-assessment">
-              Request a Case Assessment
+              <span className="hidden sm:inline">Request a Case Assessment</span>
+              <span className="sm:hidden">Case Assessment</span>
             </Link>
           </Button>
 
           {/* Mobile Menu Trigger */}
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden h-10 w-10 text-primary">
-                <Menu className="w-6 h-6" />
+              <Button variant="ghost" size="icon" className="lg:hidden h-9 w-9 text-primary">
+                <Menu className="w-5 h-5" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="bg-card border-white/5 w-full sm:max-w-md p-0 overflow-y-auto">
@@ -172,7 +172,7 @@ export function Navbar() {
                 </div>
 
                 <div className="pt-4">
-                  <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold uppercase tracking-wider text-xs rounded-sm">
+                  <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold uppercase tracking-wider text-xs rounded-sm shadow-md shadow-primary/20">
                     <Link href="/#case-assessment" onClick={() => setIsMobileMenuOpen(false)}>
                       Request a Case Assessment
                     </Link>
