@@ -12,7 +12,8 @@ import {
   ShieldCheck, 
   Building, 
   Loader2,
-  Lock
+  Lock,
+  MapPin
 } from 'lucide-react';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -144,21 +145,44 @@ export default function ContactPage() {
               <SectionReveal>
                 <h2 className="text-2xl font-headline font-bold mb-6 uppercase tracking-tight">Direct Enquiries</h2>
                 <div className="space-y-6">
-                  <Card className="glass-card border-white/5 p-8 hover:border-primary/30 transition-all group">
-                    <div className="flex items-start gap-6">
+                  {/* Email Card */}
+                  <Card className="glass-card border-white/5 p-7 hover:border-primary/30 transition-all group">
+                    <div className="flex items-start gap-5">
                       <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20">
                         <Mail className="w-5 h-5 text-primary" />
                       </div>
                       <div>
                         <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-1">Direct Case Officer</p>
-                        <p className="text-lg font-headline font-bold text-white group-hover:text-primary transition-colors break-all">investigator@restitutecore.com</p>
-                        <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                        <p className="text-base md:text-lg font-headline font-bold text-white group-hover:text-primary transition-colors break-all">investigator@restitutecore.com</p>
+                        <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
                           For urgent case briefs, forensic attachments, or direct correspondence.
                         </p>
                       </div>
                     </div>
                   </Card>
 
+                  {/* Postal Address Card */}
+                  <Card className="glass-card border-white/5 p-7 hover:border-primary/30 transition-all group">
+                    <div className="flex items-start gap-5">
+                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20">
+                        <MapPin className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-1">Official Postal Address</p>
+                        <p className="text-base font-headline font-semibold text-white">Emke Vingerhoets</p>
+                        <address className="not-italic text-xs text-muted-foreground leading-relaxed mt-1">
+                          Mahoniestraat 88<br />
+                          1339 EX Almere<br />
+                          Netherlands
+                        </address>
+                        <p className="text-[10px] text-muted-foreground/70 uppercase tracking-wider mt-2.5">
+                          Official notices, verification & legal correspondence
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  {/* Confidentiality Card */}
                   <div className="p-6 rounded-lg bg-card/60 border border-white/5 space-y-3">
                     <div className="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-wider">
                       <Lock className="w-3.5 h-3.5" />
@@ -169,13 +193,14 @@ export default function ContactPage() {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-4">
+                  {/* International Hubs */}
+                  <div className="grid grid-cols-1 gap-3">
                     {[
                       { city: "Zurich", region: "Europe Hub", icon: Building },
                       { city: "London", region: "UK Hub", icon: Building },
                       { city: "Singapore", region: "Asia Hub", icon: Building }
                     ].map((hub, idx) => (
-                      <Card key={idx} className="glass-card border-white/5 p-5 hover:border-primary/20 transition-all">
+                      <Card key={idx} className="glass-card border-white/5 p-4 hover:border-primary/20 transition-all">
                         <div className="flex items-center gap-4">
                           <hub.icon className="w-4 h-4 text-muted-foreground opacity-50" />
                           <div>
@@ -269,7 +294,7 @@ export default function ContactPage() {
                     <div className="pt-2">
                       <Button 
                         disabled={loading} 
-                        className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold h-12 px-8 rounded-sm transition-all w-full md:w-auto"
+                        className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold h-12 px-8 rounded-sm transition-all w-full md:w-auto shadow-md shadow-primary/20"
                       >
                         {loading ? (
                           <div className="flex items-center gap-2">

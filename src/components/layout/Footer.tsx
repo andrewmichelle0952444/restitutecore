@@ -1,6 +1,6 @@
 'use client';
 
-import { Shield, Twitter, Linkedin, Send, Radio, Mail } from 'lucide-react';
+import { Shield, Twitter, Linkedin, Send, Radio, Mail, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
@@ -67,7 +67,7 @@ export function Footer() {
             <h5 className="text-[10px] font-bold mb-6 text-foreground uppercase tracking-[0.25em]">Process & Approach</h5>
             <ul className="space-y-3.5 text-xs text-muted-foreground font-medium">
               <li><Link href="/#process" className="hover:text-primary transition-colors">3-Stage Assessment</Link></li>
-              <li><Link href="/#approach" className="hover:text-primary transition-colors">Fraud Investigation Methodology</Link></li>
+              <li><Link href="/#process" className="hover:text-primary transition-colors">Fraud Investigation Methodology</Link></li>
               <li><Link href="/#why-us" className="hover:text-primary transition-colors">Why RESTITUTECORE & Credentials</Link></li>
               <li><Link href="/#resources" className="hover:text-primary transition-colors">Scam Recovery Guides & FAQs</Link></li>
             </ul>
@@ -78,25 +78,42 @@ export function Footer() {
             <ul className="space-y-3.5 text-xs text-muted-foreground font-medium">
               <li><Link href="/#why-us" className="hover:text-primary transition-colors">No Guaranteed Recovery Policy</Link></li>
               <li><Link href="/#resources" className="hover:text-primary transition-colors">Secondary Recovery Scam Warning</Link></li>
-              <li><Link href="/#approach" className="hover:text-primary transition-colors">Chain of Custody Protocols</Link></li>
+              <li><Link href="/#process" className="hover:text-primary transition-colors">Chain of Custody Protocols</Link></li>
               <li><Link href="/#case-assessment" className="hover:text-primary transition-colors">Confidential Initial Assessment</Link></li>
             </ul>
           </div>
           
           <div>
             <h5 className="text-[10px] font-black mb-6 text-foreground uppercase tracking-[0.3em]">Enquiries</h5>
-            <ul className="space-y-4 text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+            <ul className="space-y-3.5 text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
               <li><a href="mailto:investigator@restitutecore.com" className="text-white block hover:text-primary transition-colors">investigator@restitutecore.com</a></li>
               <li><Link href="/#case-assessment" className="text-primary hover:underline">Request a Case Assessment</Link></li>
               <li><Link href="/contact" className="hover:text-primary transition-colors">Direct Contact Portal</Link></li>
             </ul>
+
+            <div className="mt-6 pt-4 border-t border-white/5 space-y-2">
+              <span className="text-[9px] font-black uppercase tracking-[0.25em] text-primary flex items-center gap-1.5">
+                <MapPin className="w-3 h-3 text-primary shrink-0" /> Postal Address
+              </span>
+              <address className="not-italic text-[11px] text-muted-foreground leading-relaxed">
+                <span className="text-white font-medium block">Emke Vingerhoets</span>
+                Mahoniestraat 88<br />
+                1339 EX Almere<br />
+                Netherlands
+              </address>
+            </div>
           </div>
         </div>
         
-        <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
-            © {new Date().getFullYear()} RESTITUTECORE. Delaware Division of Corporations Registered.
-          </p>
+        <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="space-y-1 text-left">
+            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
+              © {new Date().getFullYear()} RESTITUTECORE. Delaware Division of Corporations Registered.
+            </p>
+            <p className="text-[10px] text-muted-foreground/80 tracking-wide">
+              Official Correspondence: Emke Vingerhoets, Mahoniestraat 88, 1339 EX Almere, Netherlands
+            </p>
+          </div>
           <div className="flex gap-6">
             <p className="text-[9px] text-muted-foreground max-w-xl text-left md:text-right leading-relaxed uppercase tracking-[0.05em] opacity-60 font-medium">
               Legal Disclosure: RESTITUTECORE provides investigative assistance, forensic evidence compilation, and digital asset tracing. RESTITUTECORE does not provide regulated legal representation or guarantee financial recovery. Outcomes depend on case-specific facts, evidence preservation, and available regulatory or banking recovery channels.

@@ -16,7 +16,8 @@ import {
   Lock,
   Shield,
   Mail,
-  ChevronRight
+  ChevronRight,
+  MapPin
 } from 'lucide-react'
 import { SectionReveal } from '@/components/ui/section-reveal'
 
@@ -203,12 +204,12 @@ NARRATIVE: ${description}
               </div>
             </Card>
 
-            {/* Direct Email Alternative Card */}
+            {/* Direct Email & Postal Correspondence Card */}
             <SectionReveal delay={200} className="mt-12 text-center">
-              <div className="max-w-2xl mx-auto p-7 md:p-9 border border-white/10 bg-[#121316] rounded-sm space-y-4 shadow-lg">
+              <div className="max-w-2xl mx-auto p-7 md:p-9 border border-white/10 bg-[#121316] rounded-sm space-y-5 shadow-lg">
                 <h3 className="text-lg md:text-xl font-headline font-semibold text-[#F5F0E7]">Prefer to contact us directly?</h3>
                 <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-                  If you already have documentation or would rather explain your situation privately, transmit your details directly to our senior analysts.
+                  If you already have documentation or wish to correspond with our senior analysts directly, transmit your details via email or official postal mail.
                 </p>
                 <div className="pt-2">
                   <a 
@@ -217,6 +218,10 @@ NARRATIVE: ${description}
                   >
                     <Mail className="w-4 h-4" /> investigator@restitutecore.com <ArrowRight className="w-3.5 h-3.5" />
                   </a>
+                </div>
+                <div className="pt-4 border-t border-white/5 text-xs text-muted-foreground leading-relaxed">
+                  <span className="text-primary font-bold uppercase tracking-wider text-[10px] block mb-1">Official Postal Address</span>
+                  Emke Vingerhoets • Mahoniestraat 88, 1339 EX Almere, Netherlands
                 </div>
               </div>
             </SectionReveal>
